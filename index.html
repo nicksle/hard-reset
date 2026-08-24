@@ -313,6 +313,12 @@
   .gt-inner img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
   .globe-hint{text-align:center;color:var(--green-dim);font-size:12px;letter-spacing:1px;margin-top:10px}
   @media(max-width:640px){ .globe-stage{height:54vh;perspective:820px} .gtile{width:104px;height:70px;left:-52px;top:-35px} }
+
+  /* ===== COVERFLOW ===== */
+  .cover-stage{position:relative;height:min(72vh,560px);perspective:1500px;overflow:hidden;margin-top:4px;touch-action:pan-y}
+  .cover-scene{position:absolute;inset:0;transform-style:preserve-3d}
+  .cover-card{position:absolute;left:50%;top:50%;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s;cursor:pointer;will-change:transform}
+  .cover-card .flier-img,.cover-card .tcard{width:100%}
 </style>
 </head>
 <body>
@@ -384,15 +390,15 @@
       <div class="sec-head">Join the <span class="b">Party</span></div>
     </div>
     <div class="carousel">
-      <button class="car-nav prev" aria-label="Previous" onclick="carMove(-1)">&lsaquo;</button>
-      <div class="track" id="carTrack">
-        <div class="fcard past" data-cap="MAY 30 · 2026 · <b>COLD_BOOT</b> · The Café, SF · past"><div class="flier-img"></div></div>
-        <div class="fcard past" data-cap="JUL 19 · 2026 · <b>STACK_OVERFLOW</b> · Decodance, SF · past"><div class="flier-img"></div></div>
-        <div class="fcard past" data-cap="SEP 12 · 2026 · <b>SEGFAULT</b> · The Bunker, Oakland · sold out"><div class="flier-img"></div></div>
-        <div class="fcard" data-next data-cap="OCT 17 · 2026 · <b>OVERCLOCK</b> · Undisclosed Warehouse, SF · <span class='live'>NEXT · TICKETS LIVE</span>"><div class="flier-img"></div></div>
-        <div class="fcard" data-cap="NOV 21 · 2026 · <b>KERNEL_PANIC</b> · Location 24h prior, SF · early bird"><div class="flier-img"></div></div>
-      </div>
-      <button class="car-nav next" aria-label="Next" onclick="carMove(1)">&rsaquo;</button>
+      <button class="car-nav prev" aria-label="Previous" onclick="partyCover&&partyCover.move(-1)">&lsaquo;</button>
+      <div class="cover-stage"><div class="cover-scene" id="carScene">
+        <div class="cover-card past" data-cap="MAY 30 · 2026 · <b>COLD_BOOT</b> · The Café, SF · past"><div class="flier-img"></div></div>
+        <div class="cover-card past" data-cap="JUL 19 · 2026 · <b>STACK_OVERFLOW</b> · Decodance, SF · past"><div class="flier-img"></div></div>
+        <div class="cover-card past" data-cap="SEP 12 · 2026 · <b>SEGFAULT</b> · The Bunker, Oakland · sold out"><div class="flier-img"></div></div>
+        <div class="cover-card" data-next data-cap="OCT 17 · 2026 · <b>OVERCLOCK</b> · Undisclosed Warehouse, SF · <span class='live'>NEXT · TICKETS LIVE</span>"><div class="flier-img"></div></div>
+        <div class="cover-card" data-cap="NOV 21 · 2026 · <b>KERNEL_PANIC</b> · Location 24h prior, SF · early bird"><div class="flier-img"></div></div>
+      </div></div>
+      <button class="car-nav next" aria-label="Next" onclick="partyCover&&partyCover.move(1)">&rsaquo;</button>
     </div>
     <div class="wrap car-caption" id="carCaption"></div>
   </section>
@@ -402,20 +408,20 @@
       <div class="sec-head">On the <span class="b">Decks</span></div>
     </div>
     <div class="carousel">
-      <button class="car-nav prev" aria-label="Previous" onclick="talMove(-1)">&lsaquo;</button>
-      <div class="track" id="talTrack">
-        <div class="fcard" data-next><div class="tcard a-magenta"><div class="tc-hdr">// RESIDENT</div><div class="tc-name">SUMMERS</div><div class="tc-role">TECH HOUSE · SF</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">RESIDENT</span><span class="tc-no">001</span></div></div></div>
-        <div class="fcard"><div class="tcard a-cyan"><div class="tc-hdr">// RESIDENT</div><div class="tc-name">GIOVANNI<br>SAINZ</div><div class="tc-role">HOUSE · SF</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">RESIDENT</span><span class="tc-no">002</span></div></div></div>
-        <div class="fcard"><div class="tcard a-green"><div class="tc-hdr">// RESIDENT</div><div class="tc-name">SEAJAY</div><div class="tc-role">TECHNO · SF</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">RESIDENT</span><span class="tc-no">003</span></div></div></div>
-        <div class="fcard"><div class="tcard a-amber"><div class="tc-hdr">// RESIDENT</div><div class="tc-name">VROK</div><div class="tc-role">INDIE DANCE · SF</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">RESIDENT</span><span class="tc-no">004</span></div></div></div>
-        <div class="fcard"><div class="tcard a-cyan"><div class="tc-hdr">// GUEST</div><div class="tc-name">VOID.SYS</div><div class="tc-role">TECHNO</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">GUEST</span><span class="tc-no">005</span></div></div></div>
-        <div class="fcard"><div class="tcard a-magenta"><div class="tc-hdr">// GUEST</div><div class="tc-name">ANALOG_DECAY</div><div class="tc-role">ELECTRO</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">GUEST</span><span class="tc-no">006</span></div></div></div>
-        <div class="fcard"><div class="tcard a-green"><div class="tc-hdr">// GUEST</div><div class="tc-name">KT-909</div><div class="tc-role">ACID / LIVE</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">GUEST</span><span class="tc-no">007</span></div></div></div>
-        <div class="fcard"><div class="tcard a-amber"><div class="tc-hdr">// GUEST</div><div class="tc-name">303_QUEEN</div><div class="tc-role">ACID HOUSE</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag past">PAST</span><span class="tc-no">008</span></div></div></div>
-        <div class="fcard"><div class="tcard a-cyan"><div class="tc-hdr">// GUEST</div><div class="tc-name">MODULAR_MOTH</div><div class="tc-role">AMBIENT TECHNO</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag past">PAST</span><span class="tc-no">009</span></div></div></div>
-        <div class="fcard"><div class="tcard a-magenta"><div class="tc-hdr">// GUEST</div><div class="tc-name">SYSADMIN</div><div class="tc-role">TECHNO</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag past">PAST</span><span class="tc-no">010</span></div></div></div>
-      </div>
-      <button class="car-nav next" aria-label="Next" onclick="talMove(1)">&rsaquo;</button>
+      <button class="car-nav prev" aria-label="Previous" onclick="talCover&&talCover.move(-1)">&lsaquo;</button>
+      <div class="cover-stage"><div class="cover-scene" id="talScene">
+        <div class="cover-card" data-next><div class="tcard a-magenta"><div class="tc-hdr">// RESIDENT</div><div class="tc-name">SUMMERS</div><div class="tc-role">TECH HOUSE · SF</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">RESIDENT</span><span class="tc-no">001</span></div></div></div>
+        <div class="cover-card"><div class="tcard a-cyan"><div class="tc-hdr">// RESIDENT</div><div class="tc-name">GIOVANNI<br>SAINZ</div><div class="tc-role">HOUSE · SF</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">RESIDENT</span><span class="tc-no">002</span></div></div></div>
+        <div class="cover-card"><div class="tcard a-green"><div class="tc-hdr">// RESIDENT</div><div class="tc-name">SEAJAY</div><div class="tc-role">TECHNO · SF</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">RESIDENT</span><span class="tc-no">003</span></div></div></div>
+        <div class="cover-card"><div class="tcard a-amber"><div class="tc-hdr">// RESIDENT</div><div class="tc-name">VROK</div><div class="tc-role">INDIE DANCE · SF</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">RESIDENT</span><span class="tc-no">004</span></div></div></div>
+        <div class="cover-card"><div class="tcard a-cyan"><div class="tc-hdr">// GUEST</div><div class="tc-name">VOID.SYS</div><div class="tc-role">TECHNO</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">GUEST</span><span class="tc-no">005</span></div></div></div>
+        <div class="cover-card"><div class="tcard a-magenta"><div class="tc-hdr">// GUEST</div><div class="tc-name">ANALOG_DECAY</div><div class="tc-role">ELECTRO</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">GUEST</span><span class="tc-no">006</span></div></div></div>
+        <div class="cover-card"><div class="tcard a-green"><div class="tc-hdr">// GUEST</div><div class="tc-name">KT-909</div><div class="tc-role">ACID / LIVE</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag ">GUEST</span><span class="tc-no">007</span></div></div></div>
+        <div class="cover-card"><div class="tcard a-amber"><div class="tc-hdr">// GUEST</div><div class="tc-name">303_QUEEN</div><div class="tc-role">ACID HOUSE</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag past">PAST</span><span class="tc-no">008</span></div></div></div>
+        <div class="cover-card"><div class="tcard a-cyan"><div class="tc-hdr">// GUEST</div><div class="tc-name">MODULAR_MOTH</div><div class="tc-role">AMBIENT TECHNO</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag past">PAST</span><span class="tc-no">009</span></div></div></div>
+        <div class="cover-card"><div class="tcard a-magenta"><div class="tc-hdr">// GUEST</div><div class="tc-name">SYSADMIN</div><div class="tc-role">TECHNO</div><div class="tc-wave"><i style="animation-delay:0s"></i><i style="animation-delay:0.12s"></i><i style="animation-delay:0.24s"></i><i style="animation-delay:0.08s"></i><i style="animation-delay:0.18s"></i></div><div class="tc-foot"><span class="tc-tag past">PAST</span><span class="tc-no">010</span></div></div></div>
+      </div></div>
+      <button class="car-nav next" aria-label="Next" onclick="talCover&&talCover.move(1)">&rsaquo;</button>
     </div>
   </section>
 
@@ -674,39 +680,30 @@
     addEventListener('scroll', ()=>{ if(!ticking){ ticking=true; requestAnimationFrame(onScroll); } }, {passive:true});
   })();
 
-  /* ---------- PARTIES CAROUSEL ---------- */
-  (function(){
-    const track=document.getElementById('carTrack');
-    if(!track) return;
-    const cards=[...track.querySelectorAll('.fcard')];
-    const cap=document.getElementById('carCaption');
-    let nextIdx=cards.findIndex(c=>c.hasAttribute('data-next')); if(nextIdx<0) nextIdx=0;
-    function centerOn(el,smooth){ const target=el.offsetLeft-(track.clientWidth-el.clientWidth)/2; track.scrollTo({left:target,behavior:smooth?'smooth':'auto'}); }
-    function update(){
-      const c=track.getBoundingClientRect(), cx=c.left+c.width/2; let best=null,bd=1e9;
-      cards.forEach(card=>{ card.classList.remove('focus'); const r=card.getBoundingClientRect(); const d=Math.abs(r.left+r.width/2-cx); if(d<bd){bd=d;best=card;} });
-      if(best){ best.classList.add('focus'); cap.innerHTML='&#9656; '+best.dataset.cap; }
-    }
-    window.carMove=function(dir){ let i=cards.findIndex(c=>c.classList.contains('focus')); if(i<0)i=nextIdx; const n=Math.min(cards.length-1,Math.max(0,i+dir)); centerOn(cards[n],true); };
-    let t; track.addEventListener('scroll',()=>{ clearTimeout(t); t=setTimeout(update,60); },{passive:true});
-    function init(){ centerOn(cards[nextIdx],false); update(); }
-    if(document.readyState==='complete') setTimeout(init,60); else window.addEventListener('load',()=>setTimeout(init,60));
-    window.addEventListener('resize',()=>{ const f=cards.find(c=>c.classList.contains('focus'))||cards[nextIdx]; centerOn(f,false); update(); });
-  })();
-
-  /* ---------- TALENT CAROUSEL ---------- */
-  (function(){
-    const track=document.getElementById('talTrack'); if(!track) return;
-    const cards=[...track.querySelectorAll('.fcard')];
-    let startIdx=cards.findIndex(c=>c.hasAttribute('data-next')); if(startIdx<0)startIdx=0;
-    function centerOn(el,s){ track.scrollTo({left:el.offsetLeft-(track.clientWidth-el.clientWidth)/2,behavior:s?'smooth':'auto'}); }
-    function update(){ const c=track.getBoundingClientRect(),cx=c.left+c.width/2; let best=null,bd=1e9; cards.forEach(k=>{k.classList.remove('focus');const r=k.getBoundingClientRect();const d=Math.abs(r.left+r.width/2-cx);if(d<bd){bd=d;best=k;}}); if(best)best.classList.add('focus'); }
-    window.talMove=function(dir){ let i=cards.findIndex(k=>k.classList.contains('focus')); if(i<0)i=startIdx; const n=Math.min(cards.length-1,Math.max(0,i+dir)); centerOn(cards[n],true); };
-    let t; track.addEventListener('scroll',()=>{clearTimeout(t);t=setTimeout(update,60);},{passive:true});
-    function init(){ centerOn(cards[startIdx],false); update(); }
-    if(document.readyState==='complete') setTimeout(init,80); else window.addEventListener('load',()=>setTimeout(init,80));
-    window.addEventListener('resize',()=>{const f=cards.find(k=>k.classList.contains('focus'))||cards[startIdx];centerOn(f,false);update();});
-  })();
+  /* ---------- COVERFLOW CAROUSELS ---------- */
+  function initCoverflow(sceneId, capId){
+    const scene=document.getElementById(sceneId); if(!scene) return null;
+    const stage=scene.parentElement;
+    const cards=[...scene.children];
+    const cap=capId?document.getElementById(capId):null;
+    let active=cards.findIndex(c=>c.hasAttribute('data-next')); if(active<0)active=0;
+    let W,H,SP,drag=false,sx=0,moved=false;
+    function size(){ W=innerWidth<640?210:300; H=W*1.25; SP=W*0.55; cards.forEach(c=>{c.style.width=W+'px';c.style.marginLeft=(-W/2)+'px';c.style.marginTop=(-H/2)+'px';}); }
+    function render(){ cards.forEach((c,i)=>{ const rel=i-active, ar=Math.abs(rel);
+      c.style.transform='translateX('+(rel*SP)+'px) translateZ('+(rel===0?90:-ar*140)+'px) rotateY('+(rel===0?0:(rel>0?-48:48))+'deg) scale('+(rel===0?1:0.86)+')';
+      c.style.opacity=ar>2.5?0:(rel===0?1:0.5); c.style.zIndex=100-ar; c.style.pointerEvents=ar>2.5?'none':'auto'; c.classList.toggle('focus',rel===0); });
+      if(cap && cards[active] && cards[active].dataset.cap) cap.innerHTML='&#9656; '+cards[active].dataset.cap; }
+    function move(d){ active=Math.max(0,Math.min(cards.length-1,active+d)); render(); }
+    cards.forEach((c,i)=>c.addEventListener('click',()=>{ if(moved)return; if(i!==active){active=i;render();} }));
+    stage.addEventListener('pointerdown',e=>{drag=true;moved=false;sx=e.clientX;});
+    window.addEventListener('pointermove',e=>{ if(drag&&Math.abs(e.clientX-sx)>8)moved=true; });
+    window.addEventListener('pointerup',e=>{ if(!drag)return; drag=false; const dx=e.clientX-sx; if(dx>60)move(-1); else if(dx<-60)move(1); });
+    size(); render();
+    addEventListener('resize',()=>{size();render();});
+    return {move:move};
+  }
+  window.partyCover=initCoverflow('carScene','carCaption');
+  window.talCover=initCoverflow('talScene',null);
 
   /* ---------- PHOTO GLOBE ---------- */
   (function(){
