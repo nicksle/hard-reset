@@ -255,7 +255,7 @@
   .flier:before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(0,0,0,.22) 4px);opacity:.5;pointer-events:none}
   .flier:after{content:'';position:absolute;left:-30%;top:-25%;width:80%;height:55%;background:radial-gradient(ellipse,var(--acc),transparent 70%);opacity:.16;pointer-events:none}
   .fl-hdr{font-size:11px;letter-spacing:2px;color:var(--acc);position:relative}
-  .fl-title{font-weight:900;font-size:46px;line-height:.86;letter-spacing:-1px;color:#fff;margin:16px 0 auto;text-shadow:3px 3px 0 var(--acc);position:relative}
+  .fl-title{font-weight:900;font-size:46px;line-height:.86;letter-spacing:-1px;color:#fff;margin:auto 0 0;text-shadow:3px 3px 0 var(--acc);position:relative}
   .fl-when{font-size:13px;color:var(--acc);letter-spacing:1px;position:relative}
   .fl-venue{font-size:12px;color:#c9d1d0;margin-top:6px;position:relative}
   .fl-line{font-size:11px;color:var(--green-dim);margin-top:8px;letter-spacing:.4px;line-height:1.5;position:relative}
@@ -320,7 +320,7 @@
   #talentDetails .term-win{--acc:var(--magenta);border-color:var(--acc)}
   .dj-left{display:flex;flex-direction:column;min-width:0}
   .dj-right{display:flex;flex-direction:column;min-width:0}
-  .djp{flex:1;border:1px solid var(--acc);background:linear-gradient(160deg,#0c1014,#060708 72%);padding:26px 24px;display:flex;flex-direction:column;position:relative;overflow:hidden;min-height:340px}
+  .djp{width:100%;aspect-ratio:1080/1350;border:1px solid var(--acc);background:linear-gradient(160deg,#0c1014,#060708 72%);padding:26px 24px;display:flex;flex-direction:column;position:relative;overflow:hidden}
   .djp:after{content:'';position:absolute;right:-18%;top:-16%;width:66%;height:48%;background:radial-gradient(ellipse,var(--acc),transparent 70%);opacity:.16;pointer-events:none}
   .djp-kick{font-size:11px;letter-spacing:2px;color:var(--acc);position:relative}
   .djp-name{font-weight:900;font-size:46px;line-height:.92;letter-spacing:-1px;color:#fff;margin:16px 0 auto;text-shadow:3px 3px 0 var(--acc);word-break:break-word;position:relative}
@@ -343,11 +343,11 @@
   .dj-mrow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(0,255,102,.14)}
   .dj-mk{color:var(--green-dim);font-size:11px;letter-spacing:2px}
   .dj-mv{color:#fff;font-size:14px}
-  .dj-socials{display:flex;gap:10px;margin-top:16px}
-  .dj-soc{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid var(--green-dim);color:var(--green);font-size:11px;letter-spacing:1px;text-decoration:none;transition:all .15s}
+  .dj-socials{display:flex;gap:10px;margin-top:14px;width:100%}
+  .dj-soc{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 8px;border:1px solid var(--green-dim);color:var(--green);font-size:11px;letter-spacing:1px;text-decoration:none;transition:all .15s}
   .dj-soc:hover{border-color:var(--acc);color:var(--acc)}
   .dj-hidden{position:absolute;left:-9999px;top:0;width:320px;height:120px;opacity:0;pointer-events:none;border:0}
-  @media(max-width:760px){.djp{min-height:260px}.djp-name{font-size:38px}}
+  @media(max-width:760px){.djp-name{font-size:38px}}
 
   .car-caption b{color:#fff}.car-caption .live{color:var(--amber)}
   @media(max-width:640px){
@@ -577,6 +577,11 @@
               <div class="djp-role" id="djRole">TECH HOUSE · SF</div>
               <div class="dj-wave" id="djWave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
             </div>
+            <div class="dj-socials">
+              <a class="dj-soc" href="#" onclick="return false">SOUNDCLOUD</a>
+              <a class="dj-soc" href="#" onclick="return false">INSTAGRAM</a>
+              <a class="dj-soc" href="#" onclick="return false">SPOTIFY</a>
+            </div>
           </div>
           <div class="dj-right">
             <div class="dj-nphead">// NOW PLAYING</div>
@@ -589,10 +594,6 @@
             <div class="dj-meta">
               <div class="dj-mrow"><span class="dj-mk">GENRE</span><span class="dj-mv" id="djGenre">Tech House</span></div>
               <div class="dj-mrow"><span class="dj-mk">CITY</span><span class="dj-mv" id="djCity">SF</span></div>
-            </div>
-            <div class="dj-socials">
-              <a class="dj-soc" href="#" onclick="return false">SOUNDCLOUD</a>
-              <a class="dj-soc" href="#" onclick="return false">INSTAGRAM</a>
             </div>
             <iframe id="djSC" class="dj-hidden" allow="autoplay" title="SoundCloud audio" src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fsoundcloud.com%2Fforss%2Fflickermood&color=%2300ff66&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"></iframe>
           </div>
