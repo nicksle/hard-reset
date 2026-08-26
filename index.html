@@ -111,8 +111,6 @@
 
   /* hero sits over the fixed video canvas */
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;padding-bottom:40px}
-  .hero::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
-    background:linear-gradient(180deg,rgba(5,6,7,.5),rgba(5,6,7,.2) 42%,rgba(5,6,7,.92));}
   .hero .status-line{color:var(--green);font-size:13px;letter-spacing:2px;margin-bottom:18px;text-shadow:0 0 10px rgba(0,0,0,.9)}
   .hero .status-line .on{color:var(--green)}
   .logo{
@@ -144,7 +142,7 @@
   .cd-box .num{font-size:34px;font-weight:900;color:#fff;text-shadow:0 0 12px var(--cyan)}
   .cd-box .lbl{font-size:11px;color:var(--green-dim);letter-spacing:2px;margin-top:4px}
 
-  .scroll-hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:var(--green-dim);font-size:12px;letter-spacing:2px;opacity:0;animation:fade .6s 1.2s forwards, bob 2s 1.4s infinite}
+  .scroll-hint{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);color:var(--green-dim);font-size:12px;letter-spacing:2px;opacity:0;animation:fade .6s 1.2s forwards, bob 2s 1.4s infinite}
   @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
 
   /* solid body covers the fixed video once you scroll past the hero */
@@ -223,7 +221,7 @@
     .cd-box .num{font-size:26px}
     .cd-box .lbl{font-size:9px;letter-spacing:1px}
     .btn{padding:14px 30px;font-size:14px;margin-top:28px}
-    .scroll-hint{bottom:16px}
+    .scroll-hint{bottom:44px}
 
     section{padding:56px 0}
     .wrap{padding:0 18px}
@@ -265,7 +263,54 @@
   .fl-tag{font-size:10px;font-weight:700;letter-spacing:1px;padding:4px 10px;border:1px solid var(--acc);color:var(--acc)}
   .fl-no{font-size:11px;color:var(--green-dim)}
   .fcard.past .flier{filter:none}
-  .car-caption{text-align:center;margin-top:20px;color:var(--green-dim);font-size:13px;letter-spacing:1px;min-height:18px}
+  .car-caption{margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:7px;min-height:18px}
+  .car-caption .c-date{color:var(--cyan);font-size:14px;letter-spacing:3px}
+  .car-caption .c-venue{color:var(--white);font-size:15px;letter-spacing:1px}
+  .car-caption .c-status{font-size:11px;font-weight:700;letter-spacing:2px;padding:5px 14px;border:1px solid var(--amber);color:var(--amber);margin-top:3px}
+  .car-caption .c-status.live{border-color:var(--magenta);color:var(--magenta)}
+  .car-caption .c-status.sold{border-color:#ff5f56;color:#ff5f56}
+  .car-caption .c-status.past{border-color:var(--gray-500);color:var(--gray-500)}
+  /* ---- section 2 event details / terminal window ---- */
+  .details{position:fixed;inset:0;z-index:140;display:none;align-items:center;justify-content:center;padding:24px}
+  .details.open{display:flex}
+  .det-backdrop{position:absolute;inset:0;background:transparent}
+  .details.open .det-backdrop{opacity:1}
+  .term-win{position:relative;z-index:2;width:min(1040px,94vw);max-height:88vh;display:flex;flex-direction:column;
+    background:var(--bg2,#0a0c0d);border:1px solid var(--green);box-shadow:0 0 0 1px rgba(0,0,0,.6),0 24px 80px rgba(0,0,0,.7),0 0 60px rgba(0,255,102,.22);
+    opacity:0;transform:scaleY(0);transform-origin:center center;will-change:transform,opacity;transition:opacity .16s ease}
+  .details.open .term-win{opacity:1}
+  .term-topbar{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--green-dim);background:rgba(0,0,0,.45);flex:0 0 auto}
+  .term-x{width:26px;height:26px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;
+    background:transparent;color:var(--green);border:1px solid var(--green-dim);cursor:pointer;font-family:var(--mono,monospace);transition:all .15s}
+  .term-x:hover{background:var(--magenta);border-color:var(--magenta);color:#000}
+  .term-title{color:var(--green-dim);font-size:12px;letter-spacing:1px;font-family:var(--mono,monospace);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .term-title #dtSlug{color:var(--cyan)}
+  .term-body{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:30px;padding:26px 28px;overflow:auto}
+  .det-left{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+  .det-flier{width:min(240px,60%);border:1px solid var(--green-dim);box-shadow:0 0 24px rgba(0,0,0,.5)}
+  .det-flier .flier-img{width:100%}
+  .det-meta{width:100%;display:flex;flex-direction:column;gap:0;border-top:1px solid var(--green-dim)}
+  .dm-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid rgba(0,255,102,.14)}
+  .dm-k{color:var(--green-dim);font-size:11px;letter-spacing:2px;font-family:var(--mono,monospace);flex:0 0 auto}
+  .dm-v{color:#fff;font-size:14px;letter-spacing:.5px;text-align:right}
+  #dtPrice{color:var(--amber)}
+  .buy-btn{margin-top:2px;padding:13px 26px;background:var(--magenta);color:#000;border:none;font-weight:700;letter-spacing:2px;font-size:13px;
+    font-family:var(--mono,monospace);cursor:pointer;transition:all .15s;box-shadow:0 0 20px rgba(255,43,214,.35)}
+  .buy-btn:hover{background:#fff;box-shadow:0 0 28px rgba(255,255,255,.4)}
+  .buy-btn:disabled{background:transparent;color:var(--gray-500);border:1px solid var(--gray-500);box-shadow:none;cursor:not-allowed}
+  .det-right{display:flex;flex-direction:column;gap:14px;min-width:0}
+  .det-lineup-head{color:var(--green-dim);font-size:12px;letter-spacing:3px;font-family:var(--mono,monospace)}
+  .talent-row{display:flex;flex-wrap:wrap;gap:12px}
+  .mini-dj{flex:0 0 auto;min-width:130px;border:1px solid var(--green-dim);background:rgba(0,255,102,.03);padding:14px 14px 12px;
+    display:flex;flex-direction:column;gap:8px;transition:all .15s}
+  .mini-dj:hover{border-color:var(--magenta);background:rgba(255,43,214,.05)}
+  .mini-dj .mj-n{color:#fff;font-weight:700;letter-spacing:1px;font-size:14px}
+  .mini-dj .mj-r{color:var(--cyan);font-size:10px;letter-spacing:2px;font-family:var(--mono,monospace)}
+  .mini-dj .mj-wave{display:flex;align-items:flex-end;gap:2px;height:12px;margin-top:2px}
+  .mini-dj .mj-wave i{width:3px;background:var(--magenta);opacity:.8;animation:mjw 1s ease-in-out infinite}
+  @keyframes mjw{0%,100%{height:3px}50%{height:12px}}
+  @media(max-width:760px){.term-body{grid-template-columns:1fr;gap:22px}.det-flier{width:180px}.det-left{align-items:center}.dm-v{text-align:right}}
+
   .car-caption b{color:#fff}.car-caption .live{color:var(--amber)}
   @media(max-width:640px){
     .car-nav{display:none}
@@ -315,10 +360,27 @@
   @media(max-width:640px){ .globe-stage{height:54vh;perspective:820px} .gtile{width:104px;height:70px;left:-52px;top:-35px} }
 
   /* ===== COVERFLOW ===== */
-  .cover-stage{position:relative;height:min(72vh,560px);perspective:1500px;overflow:hidden;margin-top:4px;touch-action:pan-y}
+  .cover-stage{position:relative;height:min(52vh,430px);perspective:1500px;overflow:hidden;margin-top:4px;touch-action:pan-y}
   .cover-scene{position:absolute;inset:0;transform-style:preserve-3d}
-  .cover-card{position:absolute;left:50%;top:50%;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s;cursor:pointer;will-change:transform}
+  .cover-card{position:absolute;left:50%;top:50%;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s,border-color .3s;cursor:pointer;will-change:transform;border:1px solid transparent;padding:8px;background:#0a0c0d}
   .cover-card .flier-img,.cover-card .tcard{width:100%}
+
+  .cover-card{overflow:visible}
+  .cf-veil{position:absolute;inset:0;background:#060708;opacity:0;transition:opacity .5s;pointer-events:none;z-index:3}
+  .cover-card.focus{box-shadow:0 30px 70px rgba(0,0,0,.6);border-color:var(--green)}
+
+  /* hero marquee strips */
+  .hero-mq{position:absolute;left:50%;transform:translateX(-50%);width:100vw;overflow:hidden;z-index:4;pointer-events:none;
+    padding:9px 0;background:rgba(6,7,8,.5);border-top:1px solid var(--green-dim);border-bottom:1px solid var(--green-dim)}
+  .hero-mq.top{top:0}
+  .hero-mq.bottom{bottom:0}
+  .hero-mq span{display:inline-block;white-space:nowrap;color:var(--magenta);font-weight:700;letter-spacing:4px;font-size:14px;text-transform:uppercase;text-shadow:0 0 8px rgba(255,43,214,.4)}
+  .mqi{height:.8em;width:auto;vertical-align:middle;margin:0 .55em;fill:currentColor;shape-rendering:crispEdges}
+  .hero-mq.top span{animation:mqL 26s linear infinite}
+  .hero-mq.bottom span{animation:mqR 32s linear infinite}
+  @keyframes mqL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes mqR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+  @media(max-width:640px){ .hero-mq span{font-size:12px;letter-spacing:2px} }
 </style>
 </head>
 <body>
@@ -342,6 +404,8 @@
 <!-- ===== MAIN SITE ===== -->
 <div id="site">
   <header class="hero wrap">
+    <div class="hero-mq top" id="heroMqTop"><span></span></div>
+    <div class="hero-mq bottom" id="heroMqBot"><span></span></div>
     <div class="logo logo-svg" id="logo"><svg viewBox="0 0 919 788" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
 <path d="M211.367 0V378.296H144.424V245.892H69.8091V378.296H2.86523V0H69.8091V145.013H144.424V0H211.367Z" fill="#F4F4F3"/>
 <path d="M226.807 378.296L302.816 0H383.358L459.716 378.296H393.469L383.706 321.551H301.421L291.31 378.296H226.807ZM316.414 236.148H369.062L353.024 143.867L343.261 82.5372H342.215L332.801 143.294L316.414 236.148Z" fill="#F4F4F3"/>
@@ -381,31 +445,50 @@
   </header>
 
   <div class="site-body">
-  <div class="marquee">
-    <span>NO PHONES ON THE FLOOR ★ RESPECT THE SPACE ★ RESPECT EACH OTHER ★ HARD_RESET ★ TECHNO NOT TECHBRO ★ SEE YOU IN THE DARK ★ NO PHONES ON THE FLOOR ★ RESPECT THE SPACE ★ RESPECT EACH OTHER ★ HARD_RESET ★ TECHNO NOT TECHBRO ★ SEE YOU IN THE DARK ★ </span>
-  </div>
 
   <section id="parties">
     <div class="wrap reveal">
       <div class="sec-head">Join the <span class="b">Party</span></div>
     </div>
     <div class="carousel">
-      <button class="car-nav prev" aria-label="Previous" onclick="partyCover&&partyCover.move(-1)">&lsaquo;</button>
       <div class="cover-stage"><div class="cover-scene" id="carScene">
-        <div class="cover-card past" data-cap="MAY 30 · 2026 · <b>COLD_BOOT</b> · The Café, SF · past"><div class="flier-img"></div></div>
-        <div class="cover-card past" data-cap="JUL 19 · 2026 · <b>STACK_OVERFLOW</b> · Decodance, SF · past"><div class="flier-img"></div></div>
-        <div class="cover-card past" data-cap="SEP 12 · 2026 · <b>SEGFAULT</b> · The Bunker, Oakland · sold out"><div class="flier-img"></div></div>
-        <div class="cover-card" data-next data-cap="OCT 17 · 2026 · <b>OVERCLOCK</b> · Undisclosed Warehouse, SF · <span class='live'>NEXT · TICKETS LIVE</span>"><div class="flier-img"></div></div>
-        <div class="cover-card" data-cap="NOV 21 · 2026 · <b>KERNEL_PANIC</b> · Location 24h prior, SF · early bird"><div class="flier-img"></div></div>
+        <div class="cover-card past" data-date="FRI · MAY 30 · 2026" data-venue="THE CAFÉ · SF" data-status="PAST" data-price="PAST EVENT" data-talent="SUMMERS::TECH HOUSE,SEAJAY::ELECTRO,V0RTEX::TECHNO"><div class="flier-img"></div></div>
+        <div class="cover-card past" data-date="SAT · JUL 19 · 2026" data-venue="DECODANCE · SF" data-status="PAST" data-price="PAST EVENT" data-talent="GIOVANNI SAINZ::HOUSE,KT-909::ACID,NULLBYTE::INDIE DANCE"><div class="flier-img"></div></div>
+        <div class="cover-card past" data-date="SAT · SEP 12 · 2026" data-venue="THE BUNKER · OAKLAND" data-status="SOLD OUT" data-price="SOLD OUT" data-talent="MODULAR_MOTH::MODULAR,303_QUEEN::ACID TECHNO,SYSADMIN::TECHNO,SEAJAY::ELECTRO"><div class="flier-img"></div></div>
+        <div class="cover-card" data-next data-date="SAT · OCT 17 · 2026" data-venue="[UNDISCLOSED WAREHOUSE] · SF" data-status="TICKETS LIVE" data-price="$15 PRESALE · $20 DOOR" data-talent="V0ID.SYS::HARD TECHNO,ANALOG_DECAY::ELECTRO,KT-909::ACID,RESET RESIDENTS::B2B"><div class="flier-img"></div></div>
+        <div class="cover-card" data-date="FRI · NOV 21 · 2026" data-venue="LOCATION 24H PRIOR · SF" data-status="EARLY BIRD" data-price="EARLY BIRD $12" data-talent="TBA::HEADLINER,RESET RESIDENTS::OPENING,+ SPECIAL GUESTS::LIVE"><div class="flier-img"></div></div>
       </div></div>
-      <button class="car-nav next" aria-label="Next" onclick="partyCover&&partyCover.move(1)">&rsaquo;</button>
     </div>
     <div class="wrap car-caption" id="carCaption"></div>
+    <div class="details" id="partyDetails" aria-hidden="true">
+      <div class="det-backdrop"></div>
+      <div class="term-win" role="dialog">
+        <div class="term-topbar">
+          <button class="term-x" type="button" aria-label="Close details">&#215;</button>
+          <span class="term-title">hard_reset:~/events$ ./open <span id="dtSlug">event</span></span>
+        </div>
+        <div class="term-body">
+          <div class="det-left">
+            <div class="det-flier"><div class="flier-img"></div></div>
+            <div class="det-meta">
+              <div class="dm-row"><span class="dm-k">DATE</span><span class="dm-v" id="dtDate"></span></div>
+              <div class="dm-row"><span class="dm-k">LOCATION</span><span class="dm-v" id="dtLoc"></span></div>
+              <div class="dm-row"><span class="dm-k">TICKETS</span><span class="dm-v" id="dtPrice"></span></div>
+            </div>
+            <button class="buy-btn" type="button" id="dtBuy">&#9656; BUY TICKETS</button>
+          </div>
+          <div class="det-right">
+            <div class="det-lineup-head">// LINEUP</div>
+            <div class="talent-row" id="dtTalent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section id="talent" class="talent">
     <div class="wrap reveal">
-      <div class="sec-head">On the <span class="b">Decks</span></div>
+      <div class="sec-head">DJs on <span class="b">Deck</span></div>
     </div>
     <div class="carousel">
       <button class="car-nav prev" aria-label="Previous" onclick="talCover&&talCover.move(-1)">&lsaquo;</button>
@@ -681,28 +764,130 @@
   })();
 
   /* ---------- COVERFLOW CAROUSELS ---------- */
-  function initCoverflow(sceneId, capId){
+  function initCoverflow(sceneId, capId, detailsId){
     const scene=document.getElementById(sceneId); if(!scene) return null;
     const stage=scene.parentElement;
     const cards=[...scene.children];
     const cap=capId?document.getElementById(capId):null;
+    const overlay=detailsId?document.getElementById(detailsId):null;
     let active=cards.findIndex(c=>c.hasAttribute('data-next')); if(active<0)active=0;
     let W,H,SP,drag=false,sx=0,moved=false;
-    function size(){ W=innerWidth<640?210:300; H=W*1.25; SP=W*0.55; cards.forEach(c=>{c.style.width=W+'px';c.style.marginLeft=(-W/2)+'px';c.style.marginTop=(-H/2)+'px';}); }
+    const SCALE=1.15;         /* <- one knob: scale the whole carousel; effect stays identical */
+    function size(){
+      const base=innerWidth<640?210:300;
+      W=base*SCALE; H=W*1.25;              /* card size */
+      SP=W*0.55;                            /* spread  (scales with W) */
+      stage.style.perspective=(W*5)+'px';   /* viewer distance (scales with W) */
+      stage.style.height=Math.min(Math.round(H+28), Math.round(innerHeight*0.9))+'px';  /* hug the card, no clip / no gap */
+      cards.forEach(c=>{c.style.width=W+'px';c.style.marginLeft=(-W/2)+'px';c.style.marginTop=(-H/2)+'px';});
+    }
     function render(){ cards.forEach((c,i)=>{ const rel=i-active, ar=Math.abs(rel);
-      c.style.transform='translateX('+(rel*SP)+'px) translateZ('+(rel===0?90:-ar*140)+'px) rotateY('+(rel===0?0:(rel>0?-48:48))+'deg) scale('+(rel===0?1:0.86)+')';
-      c.style.opacity=ar>2.5?0:(rel===0?1:0.5); c.style.zIndex=100-ar; c.style.pointerEvents=ar>2.5?'none':'auto'; c.classList.toggle('focus',rel===0); });
-      if(cap && cards[active] && cards[active].dataset.cap) cap.innerHTML='&#9656; '+cards[active].dataset.cap; }
+      c.style.transform='translateX('+(rel*SP)+'px) translateZ('+(rel===0?W*0.3:-ar*W*0.467)+'px) rotateY('+(rel===0?0:(rel>0?-48:48))+'deg) scale('+(rel===0?1:0.86)+')';
+      c.style.opacity=ar>2.5?0:1; c.style.zIndex=100-ar; c.style.pointerEvents=ar>2.5?'none':'auto'; c.classList.toggle('focus',rel===0); if(c.__veil) c.__veil.style.opacity=(rel===0?0:Math.min(0.62,0.32+ar*0.15)); });
+      if(cap && cards[active] && cards[active].dataset.date){ var d=cards[active].dataset; var st=(d.status||'').toUpperCase();
+        var sc=/LIVE/.test(st)?'live':/SOLD/.test(st)?'sold':/PAST/.test(st)?'past':'';
+        cap.innerHTML='<div class="c-date">'+d.date+'</div><div class="c-venue">'+d.venue+'</div><div class="c-status '+sc+'">'+d.status+'</div>'; } }
     function move(d){ active=Math.max(0,Math.min(cards.length-1,active+d)); render(); }
-    cards.forEach((c,i)=>c.addEventListener('click',()=>{ if(moved)return; if(i!==active){active=i;render();} }));
+    cards.forEach((c,i)=>{ const v=document.createElement('div'); v.className='cf-veil'; c.appendChild(v); c.__veil=v; c.addEventListener('click',()=>{ if(moved)return; if(i!==active){active=i;render();} else if(overlay){ openDetails(); } }); });
     stage.addEventListener('pointerdown',e=>{drag=true;moved=false;sx=e.clientX;});
     window.addEventListener('pointermove',e=>{ if(drag&&Math.abs(e.clientX-sx)>8)moved=true; });
     window.addEventListener('pointerup',e=>{ if(!drag)return; drag=false; const dx=e.clientX-sx; if(dx>60)move(-1); else if(dx<-60)move(1); });
+    var wheelAcc=0, wheelLock=false, wheelQuiet=null;
+    stage.addEventListener('wheel',function(e){
+      if(Math.abs(e.deltaX)<=Math.abs(e.deltaY)) return;   /* let vertical scroll the page */
+      e.preventDefault();
+      clearTimeout(wheelQuiet);
+      wheelQuiet=setTimeout(function(){ wheelLock=false; wheelAcc=0; },140);  /* gesture ends when events stop */
+      if(wheelLock) return;                                 /* already moved once this swipe */
+      wheelAcc+=e.deltaX;
+      if(Math.abs(wheelAcc)>18){ move(wheelAcc>0?1:-1); wheelLock=true; }   /* one item per swipe */
+    },{passive:false});
+    /* ---------- EVENT DETAILS (terminal window) ---------- */
+    function glitchCaption(){
+      if(!cap) return;
+      clearInterval(cap.__gi); clearTimeout(cap.__gt);
+      cap.style.transition=''; cap.style.opacity='1';
+      var dEl=cap.querySelector('.c-date'), vEl=cap.querySelector('.c-venue');   /* scramble the real text; NOT the status tag */
+      if(!dEl||!vEl){ cap.style.transition='opacity .4s'; cap.style.opacity='0'; return; }
+      function seed(t){ var a=[]; for(var i=0;i<t.length;i++) a.push({c:t.charAt(i), t:Math.random()}); return a; }
+      var dA=seed(dEl.textContent), vA=seed(vEl.textContent);   /* each char gets a random flip time */
+      function bit(){ return Math.random()<0.5?'0':'1'; }
+      function draw(a,p){ var s=''; for(var i=0;i<a.length;i++){ var o=a[i]; s += (o.c===' ') ? ' ' : (p>o.t ? bit() : o.c); } return s; }
+      var frames=13, f=0;
+      cap.__gi=setInterval(function(){
+        f++; var p=f/frames;
+        dEl.textContent=draw(dA,p); vEl.textContent=draw(vA,p);   /* chars randomly binary-out, shimmering */
+        if(f>=frames) clearInterval(cap.__gi);
+      },30);
+      /* whole caption fades together (date, venue AND availability) as the details animate in */
+      cap.__gt=setTimeout(function(){ cap.style.transition='opacity .42s'; cap.style.opacity='0'; },820);
+    }
+    function openDetails(){
+      if(!overlay) return; var c=cards[active]; if(!c) return; var d=c.dataset;
+      document.getElementById('dtDate').textContent=d.date||'';
+      document.getElementById('dtLoc').textContent=d.venue||'';
+      document.getElementById('dtPrice').textContent=d.price||d.status||'';
+      var slug=document.getElementById('dtSlug'); if(slug) slug.textContent=(d.venue||'event').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+      var buy=document.getElementById('dtBuy'); var st=(d.status||'').toUpperCase(); var closed=/SOLD|PAST/.test(st);
+      buy.disabled=closed; buy.textContent = closed ? (/PAST/.test(st)?'\u25B8 EVENT ENDED':'\u25B8 SOLD OUT') : '\u25B8 BUY TICKETS';
+      var row=document.getElementById('dtTalent'); row.innerHTML='';
+      (d.talent||'').split(',').forEach(function(t){ if(!t.trim())return; var parts=t.split('::'); var name=parts[0]||t, role=parts[1]||'';
+        var el=document.createElement('div'); el.className='mini-dj';
+        el.innerHTML='<div class="mj-n">'+name+'</div><div class="mj-r">'+role+'</div><div class="mj-wave"><i style="animation-delay:0s"></i><i style="animation-delay:.15s"></i><i style="animation-delay:.3s"></i><i style="animation-delay:.1s"></i><i style="animation-delay:.22s"></i></div>';
+        row.appendChild(el); });
+      var win=overlay.querySelector('.term-win');
+      if(win){ win.style.transition='none'; win.style.transform='scaleY(0)'; win.style.opacity=''; }  /* start as a full-width center line */
+      overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow='hidden';
+      glitchCaption();
+      cards.forEach(function(c,i){
+        if(i===active){
+          var base=c.style.transform||'';
+          c.style.transition='transform .44s cubic-bezier(.55,.06,.68,.19) .34s';  /* active COLLAPSES (scaleY->0) after the others fade */
+          c.style.transform=base+' scaleY(0)';
+        } else {
+          c.style.transition='opacity .3s ease';   /* inactive fade first, in tandem with the glitch */
+          c.style.opacity='0';
+        }
+      });
+      scene.style.pointerEvents='none';
+      var head=document.querySelector('#parties .sec-head');
+      if(head){ head.style.transition='opacity .42s ease .84s'; head.style.opacity='0'; }  /* heading fades as the details animate in */
+      if(win){ requestAnimationFrame(function(){ requestAnimationFrame(function(){
+        win.style.transition='transform .62s cubic-bezier(.16,.85,.3,1) .92s';   /* wait for the glitch to fully clear, THEN expand */
+        win.style.transform='scaleY(1)';
+      }); }); }
+    }
+    function closeDetails(){
+      if(!overlay) return;
+      var win=overlay.querySelector('.term-win');
+      cards.forEach(function(c){ c.style.transition=''; });  /* let render() fade them back via CSS */
+      scene.style.pointerEvents=''; render();
+      var head=document.querySelector('#parties .sec-head');
+      if(head){ head.style.transition='opacity .4s ease'; head.style.opacity='1'; }
+      function finish(){
+        overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true');
+        document.documentElement.style.overflow='';
+        if(win){ win.style.transition='none'; win.style.transform=''; win.style.opacity=''; }
+        if(cap){ clearInterval(cap.__gi); clearTimeout(cap.__gt); cap.style.transition=''; cap.style.opacity='1'; }
+        render();
+      }
+      if(win){
+        win.style.transition='transform .34s cubic-bezier(.6,0,.85,.25), opacity .22s ease .16s';
+        win.style.transform='scaleY(0)'; win.style.opacity='0';
+        setTimeout(finish,360);
+      } else finish();
+    }
+    if(overlay){
+      var xb=overlay.querySelector('.term-x'); if(xb) xb.addEventListener('click',closeDetails);
+      var bd=overlay.querySelector('.det-backdrop'); if(bd) bd.addEventListener('click',closeDetails);
+      document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&overlay.classList.contains('open')) closeDetails(); });
+    }
     size(); render();
     addEventListener('resize',()=>{size();render();});
-    return {move:move};
+    return {move:move, open:openDetails, close:closeDetails};
   }
-  window.partyCover=initCoverflow('carScene','carCaption');
+  window.partyCover=initCoverflow('carScene','carCaption','partyDetails');
   window.talCover=initCoverflow('talScene',null);
 
   /* ---------- PHOTO GLOBE ---------- */
@@ -733,6 +918,26 @@
     function up(){ dragging=false; stage.classList.remove('drag'); }
     stage.addEventListener('mousedown',down); window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
     stage.addEventListener('touchstart',down,{passive:true}); stage.addEventListener('touchmove',move,{passive:true}); window.addEventListener('touchend',up);
+  })();
+
+  /* ---------- HERO MARQUEES (infinite, gapless) ---------- */
+  (function(){
+    function pix(rows){var c=rows[0].length,r=rows.length,s='';for(var y=0;y<r;y++){for(var x=0;x<c;x++){if(rows[y][x]==='X')s+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>';}}return '<svg class="mqi" viewBox="0 0 '+c+' '+r+'" aria-hidden="true">'+s+'</svg>';}
+    var bolt=pix(["...XX","..XX.",".XXXX","XXX..","..XX.",".XX..","XX..."]);
+    var diamond=pix(["..X..",".XXX.","XXXXX",".XXX.","..X.."]);
+    var square=pix(["XXXXX","X...X","X...X","X...X","XXXXX"]);
+    var plus=pix(["..X..","..X..","XXXXX","..X..","..X.."]);
+    var TOP=' TECHNO '+bolt+' ELECTRONIC '+diamond+' INDIE DANCE '+square+' TECHNO '+plus+' ELECTRONIC '+bolt+' INDIE DANCE '+diamond+' ';
+    var BOT=' EVERY DAMN SUNDAY '+diamond+' ';
+    function fill(id,unit){
+      var el=document.getElementById(id); if(!el)return; var span=el.querySelector('span');
+      span.innerHTML=unit; var uw=span.scrollWidth||200;
+      var copies=Math.ceil((window.innerWidth*2.4)/uw); if(copies<2)copies=2; if(copies%2)copies++;
+      span.innerHTML=new Array(copies+1).join(unit);
+    }
+    function build(){ fill('heroMqTop',TOP); fill('heroMqBot',BOT); }
+    if(document.readyState!=='loading') build(); else document.addEventListener('DOMContentLoaded',build);
+    var rt; window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(build,180); });
   })();
 
   /* start */
