@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hard Reset — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* primitives */
+    --black-base:#060708; --black-900:#0A0D0E; --black-800:#12161A;
+    --green-phosphor:#00FF88; --green-dim:#0AA860; --green-deep:#067A44;
+    --magenta-neon:#FF5CE1; --magenta-deep:#C920A0;
+    --cyan-neon:#3DF0FF; --cyan-deep:#1BA9C4;
+    --amber-warn:#FFC93C; --red-error:#FF5F56;
+    --white:#FFFFFF; --gray-300:#C9D1D0; --gray-500:#7D8A86;
+    /* semantic */
+    --bg-base:var(--black-base); --bg-raised:var(--black-900); --bg-inset:var(--black-800);
+    --text-primary:var(--green-phosphor); --text-muted:var(--green-dim); --text-bright:var(--white);
+    --accent-magenta:var(--magenta-neon); --accent-cyan:var(--cyan-neon); --accent-amber:var(--amber-warn);
+    --border-default:var(--green-dim); --border-strong:var(--green-phosphor);
+    --status-live:var(--amber-warn); --status-soldout:var(--red-error);
+    /* spacing */
+    --sp-xs:4px; --sp-sm:8px; --sp-md:16px; --sp-lg:24px; --sp-xl:40px; --sp-2xl:64px;
+    /* radius */
+    --r-none:0px; --r-sm:4px; --r-md:8px; --r-lg:12px; --r-full:999px;
+    /* fonts */
+    --font-display:'Archivo Black',sans-serif;
+    --font-mono:'Space Mono',ui-monospace,'Courier New',monospace;
+    /* glows */
+    --glow-green:0 0 6px rgba(0,255,136,.9),0 0 18px rgba(0,255,136,.55);
+    --glow-magenta:0 0 6px rgba(255,92,225,.9),0 0 18px rgba(255,92,225,.55);
+    --glow-cyan:0 0 6px rgba(61,240,255,.9),0 0 18px rgba(61,240,255,.55);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg-base);color:var(--text-primary);font-family:var(--font-mono);line-height:1.55;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--accent-magenta);color:#000}
+  .scanlines{position:fixed;inset:0;z-index:99;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(0,0,0,.18) 3px,transparent 4px);mix-blend-mode:multiply}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+  section{padding:64px 0;border-bottom:1px solid rgba(10,168,96,.25)}
+  a{color:var(--accent-cyan);text-decoration:none}
+
+  /* header */
+  header{padding:80px 0 48px}
+  .kicker{color:var(--accent-cyan);font-size:14px;letter-spacing:1px;margin-bottom:24px}
+  h1.logo{font-family:var(--font-display);font-size:clamp(56px,11vw,120px);line-height:.85;color:var(--text-bright);text-shadow:var(--glow-magenta);letter-spacing:-2px}
+  .sub{margin-top:20px;font-size:18px;color:var(--text-muted);letter-spacing:1px}
+  .toc{margin-top:32px;display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;letter-spacing:1px}
+  .toc a{color:var(--text-primary)}
+  .toc a:hover{color:var(--accent-magenta);text-shadow:var(--glow-magenta)}
+
+  h2.sec{font-family:var(--font-mono);font-weight:700;font-size:28px;color:var(--text-primary);letter-spacing:1px;margin-bottom:8px}
+  h2.sec .p{color:var(--accent-magenta)}
+  .sec-note{color:var(--text-muted);font-size:14px;margin-bottom:32px;max-width:64ch}
+  h3.sub3{font-size:13px;letter-spacing:2px;color:var(--gray-500);text-transform:uppercase;margin:28px 0 14px}
+
+  /* colors */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+  .swatch .chip{height:80px;border-radius:8px;border:1px solid var(--border-default)}
+  .swatch .name{margin-top:8px;font-size:13px;color:var(--text-primary)}
+  .swatch .hex{font-size:12px;color:var(--text-muted)}
+
+  /* type */
+  .type-row{padding:16px 0;border-top:1px solid rgba(10,168,96,.18)}
+  .type-row .meta{font-size:12px;color:var(--gray-500);letter-spacing:1px;margin-bottom:6px}
+  .t-display{font-family:var(--font-display);font-size:72px;line-height:.9;color:var(--text-bright)}
+  .t-h1{font-weight:700;font-size:40px;color:var(--text-primary)}
+  .t-h2{font-weight:700;font-size:28px;color:var(--text-primary)}
+  .t-h3{font-weight:700;font-size:20px;color:var(--text-primary)}
+  .t-body{font-size:16px;color:var(--text-muted)}
+  .t-terminal{font-size:15px;color:var(--text-primary)}
+  .t-label{font-weight:700;font-size:12px;letter-spacing:2px;color:var(--accent-amber)}
+  .t-button{font-weight:700;font-size:16px;letter-spacing:2px;color:var(--text-primary)}
+
+  /* effects */
+  .glows{display:flex;gap:24px;flex-wrap:wrap}
+  .glowchip{border:1px solid var(--border-default);border-radius:8px;padding:22px 30px;text-align:center}
+  .glowchip .g{font-weight:700;font-size:22px}
+  .glowchip .l{font-size:12px;color:var(--text-muted);margin-top:8px}
+  .g-green{color:var(--text-primary);text-shadow:var(--glow-green)}
+  .g-magenta{color:var(--accent-magenta);text-shadow:var(--glow-magenta)}
+  .g-cyan{color:var(--accent-cyan);text-shadow:var(--glow-cyan)}
+
+  /* spacing */
+  .sp-row{display:flex;align-items:center;gap:16px;margin-bottom:10px}
+  .sp-row .lab{width:110px;font-size:13px;color:var(--text-muted)}
+  .sp-bar{height:18px;background:var(--accent-magenta);border-radius:3px}
+  .radii{display:flex;gap:20px;flex-wrap:wrap}
+  .radii .rc{text-align:center}
+  .radii .box{width:72px;height:72px;background:var(--accent-cyan)}
+  .radii .l{font-size:12px;color:var(--text-muted);margin-top:8px}
+
+  /* components */
+  .demo{background:var(--bg-raised);border:1px solid var(--border-default);border-radius:8px;padding:32px;margin-bottom:14px;display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+  .usage{font-size:13px;color:var(--text-muted);margin-bottom:28px}
+  .usage code{color:var(--accent-cyan);background:var(--bg-inset);padding:1px 6px;border-radius:3px}
+
+  /* button */
+  .btn{font-family:var(--font-mono);font-weight:700;font-size:16px;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:none;cursor:pointer;transition:.15s}
+  .btn-primary{background:var(--accent-magenta);color:#000}
+  .btn-primary:hover{background:var(--accent-cyan);box-shadow:var(--glow-cyan)}
+  .btn-ghost{background:transparent;border:1.5px solid var(--border-strong);color:var(--text-primary)}
+  .btn-ghost:hover{box-shadow:var(--glow-green)}
+
+  /* badge */
+  .badge{display:inline-block;font-weight:700;font-size:12px;letter-spacing:2px;padding:5px 16px;border:1px solid}
+  .badge-live{color:var(--status-live);border-color:var(--status-live)}
+  .badge-early{color:var(--accent-magenta);border-color:var(--accent-magenta)}
+  .badge-sold{color:var(--status-soldout);border-color:var(--status-soldout)}
+
+  /* terminal */
+  .term{border:1px solid var(--border-default);border-radius:8px;overflow:hidden;max-width:520px;width:100%;box-shadow:0 0 40px rgba(0,255,136,.1)}
+  .term .bar{background:var(--bg-inset);padding:10px 14px;display:flex;align-items:center;gap:8px}
+  .term .dot{width:12px;height:12px;border-radius:50%}
+  .term .title{margin-left:8px;font-size:12px;color:var(--text-muted)}
+  .term .body{background:var(--bg-raised);padding:20px;font-size:14px}
+  .term .body div{margin-bottom:4px}
+  .c-cyan{color:var(--accent-cyan)} .c-green{color:var(--text-primary)} .c-magenta{color:var(--accent-magenta)}
+
+  /* countdown */
+  .cd{border:1px solid var(--border-default);background:var(--bg-inset);padding:16px 24px;text-align:center}
+  .cd .num{font-weight:700;font-size:40px;color:var(--text-bright);text-shadow:var(--glow-cyan)}
+  .cd .l{font-size:12px;letter-spacing:2px;color:var(--text-muted);margin-top:4px}
+
+  /* input */
+  .inp{background:var(--bg-base);border:1.5px solid var(--border-default);color:var(--text-muted);font-family:var(--font-mono);font-size:16px;padding:12px 16px;width:300px}
+  .inp:focus{outline:none;border-color:var(--accent-cyan);color:var(--text-primary);box-shadow:var(--glow-cyan)}
+
+  /* event card */
+  .card{background:var(--bg-raised);border:1px solid var(--border-default);padding:24px;max-width:600px;width:100%}
+  .card .date{color:var(--accent-cyan);font-size:14px;letter-spacing:1px}
+  .card .name{color:var(--text-bright);font-weight:700;font-size:20px;margin:6px 0}
+  .card .venue{color:var(--text-primary);font-size:14px}
+  .card .lineup{color:var(--text-muted);font-size:13px;margin-top:8px}
+  .card .top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+  .card .acts{margin-top:16px;display:flex;gap:24px}
+  .card .acts a{font-size:14px}
+
+  footer{padding:56px 0;text-align:center;color:var(--text-muted);font-size:13px;letter-spacing:1px}
+  footer .h{color:var(--text-primary)}
+</style>
+</head>
+<body>
+<div class="scanlines"></div>
+
+<header class="wrap">
+  <div class="kicker">&gt; loading design_system --brand=hard_reset .......... [OK]</div>
+  <h1 class="logo">HARD<br>RESET</h1>
+  <div class="sub">Design System v1 — San Francisco Electronic Music · retro terminal × 80s neon</div>
+  <div class="toc">
+    <a href="#colors">./colors</a>
+    <a href="#type">./typography</a>
+    <a href="#effects">./effects</a>
+    <a href="#spacing">./spacing</a>
+    <a href="#buttons">./buttons</a>
+    <a href="#badges">./badges</a>
+    <a href="#card">./event_card</a>
+    <a href="#terminal">./terminal</a>
+    <a href="#countdown">./countdown</a>
+    <a href="#input">./input</a>
+    <a href="#voice">./voice</a>
+  </div>
+</header>
+
+<!-- COLORS -->
+<section id="colors" class="wrap">
+  <h2 class="sec">$ ls <span class="p">/colors</span></h2>
+  <p class="sec-note">Phosphor green is the voice of the system; magenta and cyan are the loud 80s accents; amber and red carry status. Everything sits on near-black terminal backgrounds. Design with the semantic tokens, not raw hex.</p>
+
+  <h3 class="sub3">Backgrounds</h3>
+  <div class="swatches">
+    <div class="swatch"><div class="chip" style="background:var(--bg-base)"></div><div class="name">bg/base</div><div class="hex">#060708</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--bg-raised)"></div><div class="name">bg/raised</div><div class="hex">#0A0D0E</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--bg-inset)"></div><div class="name">bg/inset</div><div class="hex">#12161A</div></div>
+  </div>
+
+  <h3 class="sub3">Text</h3>
+  <div class="swatches">
+    <div class="swatch"><div class="chip" style="background:var(--text-primary)"></div><div class="name">text/primary</div><div class="hex">#00FF88</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--text-muted)"></div><div class="name">text/muted</div><div class="hex">#0AA860</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--text-bright)"></div><div class="name">text/bright</div><div class="hex">#FFFFFF</div></div>
+  </div>
+
+  <h3 class="sub3">Accents</h3>
+  <div class="swatches">
+    <div class="swatch"><div class="chip" style="background:var(--accent-magenta)"></div><div class="name">accent/magenta</div><div class="hex">#FF5CE1</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--accent-cyan)"></div><div class="name">accent/cyan</div><div class="hex">#3DF0FF</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--accent-amber)"></div><div class="name">accent/amber</div><div class="hex">#FFC93C</div></div>
+  </div>
+
+  <h3 class="sub3">Borders &amp; Status</h3>
+  <div class="swatches">
+    <div class="swatch"><div class="chip" style="background:var(--border-default)"></div><div class="name">border/default</div><div class="hex">#0AA860</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--border-strong)"></div><div class="name">border/strong</div><div class="hex">#00FF88</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--status-live)"></div><div class="name">status/live</div><div class="hex">#FFC93C</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--status-soldout)"></div><div class="name">status/soldout</div><div class="hex">#FF5F56</div></div>
+  </div>
+</section>
+
+<!-- TYPE -->
+<section id="type" class="wrap">
+  <h2 class="sec">$ cat <span class="p">/typography</span></h2>
+  <p class="sec-note">Two families. <strong>Archivo Black</strong> for the wordmark and giant display moments. <strong>Space Mono</strong> for absolutely everything else — headings, body, terminal text, labels, buttons — to keep the whole system feeling like a screen.</p>
+  <div class="type-row"><div class="meta">Display / Logo — Archivo Black · 96 / -2</div><div class="t-display">HARD RESET</div></div>
+  <div class="type-row"><div class="meta">Heading / H1 — Space Mono Bold · 40</div><div class="t-h1">San Francisco Electronic Music</div></div>
+  <div class="type-row"><div class="meta">Heading / H2 — Space Mono Bold · 28</div><div class="t-h2">Upcoming Parties</div></div>
+  <div class="type-row"><div class="meta">Heading / H3 — Space Mono Bold · 20</div><div class="t-h3">Hard Reset Sundays @ QBar</div></div>
+  <div class="type-row"><div class="meta">Body / Regular — Space Mono · 16</div><div class="t-body">Good energy attracts good energy. Techno, house &amp; indie dance in SF.</div></div>
+  <div class="type-row"><div class="meta">Terminal — Space Mono · 15</div><div class="t-terminal">&gt; hard_reset --boot .......... [OK]</div></div>
+  <div class="type-row"><div class="meta">Label / Caps — Space Mono Bold · 12 / +2</div><div class="t-label">TICKETS LIVE · LOVE UNITY RESPECT</div></div>
+  <div class="type-row"><div class="meta">Button — Space Mono Bold · 16 / +2</div><div class="t-button">GET TICKETS</div></div>
+</section>
+
+<!-- EFFECTS -->
+<section id="effects" class="wrap">
+  <h2 class="sec">$ run <span class="p">/effects</span></h2>
+  <p class="sec-note">Neon glow is the system's signature. Apply it sparingly — on the wordmark, on hovered buttons, on the countdown numbers — so it stays special. Each glow is a doubled 0-offset shadow (tight + wide).</p>
+  <div class="glows">
+    <div class="glowchip"><div class="g g-green">GLOW</div><div class="l">Glow/Green</div></div>
+    <div class="glowchip"><div class="g g-magenta">GLOW</div><div class="l">Glow/Magenta</div></div>
+    <div class="glowchip"><div class="g g-cyan">GLOW</div><div class="l">Glow/Cyan</div></div>
+  </div>
+</section>
+
+<!-- SPACING -->
+<section id="spacing" class="wrap">
+  <h2 class="sec">$ ls <span class="p">/spacing</span> <span class="p">/radius</span></h2>
+  <p class="sec-note">A 4-based spacing scale and mostly-sharp corners. The terminal/brutalist feel lives in square edges — reserve rounding for the terminal window (md) and pills (full).</p>
+  <h3 class="sub3">Spacing</h3>
+  <div class="sp-row"><span class="lab">xs · 4</span><div class="sp-bar" style="width:4px"></div></div>
+  <div class="sp-row"><span class="lab">sm · 8</span><div class="sp-bar" style="width:8px"></div></div>
+  <div class="sp-row"><span class="lab">md · 16</span><div class="sp-bar" style="width:16px"></div></div>
+  <div class="sp-row"><span class="lab">lg · 24</span><div class="sp-bar" style="width:24px"></div></div>
+  <div class="sp-row"><span class="lab">xl · 40</span><div class="sp-bar" style="width:40px"></div></div>
+  <div class="sp-row"><span class="lab">2xl · 64</span><div class="sp-bar" style="width:64px"></div></div>
+  <h3 class="sub3">Radius</h3>
+  <div class="radii">
+    <div class="rc"><div class="box" style="border-radius:0"></div><div class="l">none · 0</div></div>
+    <div class="rc"><div class="box" style="border-radius:4px"></div><div class="l">sm · 4</div></div>
+    <div class="rc"><div class="box" style="border-radius:8px"></div><div class="l">md · 8</div></div>
+    <div class="rc"><div class="box" style="border-radius:12px"></div><div class="l">lg · 12</div></div>
+    <div class="rc"><div class="box" style="border-radius:999px"></div><div class="l">full</div></div>
+  </div>
+</section>
+
+<!-- BUTTONS -->
+<section id="buttons" class="wrap">
+  <h2 class="sec">&lt;<span class="p">Button</span> /&gt;</h2>
+  <p class="usage">Primary (magenta) for the one action that matters on a screen — usually <code>GET TICKETS</code>. Ghost (outlined) for secondary actions. Hover adds a neon glow. Hover them below.</p>
+  <div class="demo">
+    <button class="btn btn-primary">Get Tickets</button>
+    <button class="btn btn-ghost">Get Tickets</button>
+  </div>
+</section>
+
+<!-- BADGES -->
+<section id="badges" class="wrap">
+  <h2 class="sec">&lt;<span class="p">StatusBadge</span> /&gt;</h2>
+  <p class="usage">Sits on event cards. <code>Live</code> = amber, <code>Early Bird</code> = magenta, <code>Sold Out</code> = red. Outline only, no fill, so it never fights the card.</p>
+  <div class="demo">
+    <span class="badge badge-live">TICKETS LIVE</span>
+    <span class="badge badge-early">EARLY BIRD</span>
+    <span class="badge badge-sold">SOLD OUT</span>
+  </div>
+</section>
+
+<!-- EVENT CARD -->
+<section id="card" class="wrap">
+  <h2 class="sec">&lt;<span class="p">EventCard</span> /&gt;</h2>
+  <p class="usage">The workhorse of the parties list. Date, name, venue, lineup, a status badge, and terminal-style action links.</p>
+  <div class="demo">
+    <div class="card">
+      <div class="top">
+        <div>
+          <div class="date">SAT · OCT 17 · 2026 · 2200</div>
+          <div class="name">HARD RESET 004 — "OVERCLOCK"</div>
+          <div class="venue">▸ [Undisclosed Warehouse] · SOMA, SF</div>
+          <div class="lineup">LINEUP: VOID.SYS · ANALOG_DECAY · KT-909</div>
+        </div>
+        <span class="badge badge-live">TICKETS LIVE</span>
+      </div>
+      <div class="acts"><a href="#">&gt; buy_tickets</a><a href="#">&gt; add_to_calendar</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- TERMINAL -->
+<section id="terminal" class="wrap">
+  <h2 class="sec">&lt;<span class="p">TerminalWindow</span> /&gt;</h2>
+  <p class="usage">The brand's hero device. Use for boot sequences and to frame key moments. Traffic-light dots, a title bar, and a monospace body.</p>
+  <div class="demo">
+    <div class="term">
+      <div class="bar"><span class="dot" style="background:#FF5F56"></span><span class="dot" style="background:#FFC93C"></span><span class="dot" style="background:#00FF88"></span><span class="title">hard_reset — bash — 80×24</span></div>
+      <div class="body">
+        <div class="c-cyan">&gt; hard_reset --boot</div>
+        <div class="c-green">&nbsp;&nbsp;loading good vibes.......... [OK]</div>
+        <div class="c-green">&nbsp;&nbsp;warming up the dancefloor... [OK]</div>
+        <div class="c-magenta">&nbsp;&nbsp;status: READY WHEN YOU ARE</div>
+        <div class="c-green">&gt; █</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<section id="countdown" class="wrap">
+  <h2 class="sec">&lt;<span class="p">CountdownUnit</span> /&gt;</h2>
+  <p class="usage">Place four in a row for a full countdown to the next party. Big glowing number + a small caps label.</p>
+  <div class="demo">
+    <div class="cd"><div class="num">69</div><div class="l">DAYS</div></div>
+    <div class="cd"><div class="num">01</div><div class="l">HRS</div></div>
+    <div class="cd"><div class="num">40</div><div class="l">MIN</div></div>
+    <div class="cd"><div class="num">21</div><div class="l">SEC</div></div>
+  </div>
+</section>
+
+<!-- INPUT -->
+<section id="input" class="wrap">
+  <h2 class="sec">&lt;<span class="p">Input</span> /&gt;</h2>
+  <p class="usage">Mailing-list and form fields. Dim green border at rest; focus turns cyan and glows. Click into it below.</p>
+  <div class="demo">
+    <input class="inp" type="email" placeholder="you@domain.sf">
+  </div>
+</section>
+
+<!-- VOICE -->
+<section id="voice" class="wrap">
+  <h2 class="sec">$ man <span class="p">/voice</span></h2>
+  <p class="sec-note">The look is underground; the words are welcoming. That contrast is the brand.</p>
+  <div class="term" style="max-width:640px">
+    <div class="bar"><span class="dot" style="background:#FF5F56"></span><span class="dot" style="background:#FFC93C"></span><span class="dot" style="background:#00FF88"></span><span class="title">voice.md</span></div>
+    <div class="body">
+      <div class="c-green">&nbsp;✓ good energy attracts good energy</div>
+      <div class="c-green">&nbsp;✓ love · unity · respect</div>
+      <div class="c-green">&nbsp;✓ playful, techy, welcoming</div>
+      <div class="c-magenta">&nbsp;✗ gatekeeping / "no phones" / elitism</div>
+      <div class="c-magenta">&nbsp;✗ cold, exclusive, warehouse-secret tone</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="h">HARD_RESET // DESIGN SYSTEM v1</div>
+  <div>Figma library + this reference · San Francisco Electronic Music</div>
+</footer>
+</body>
+</html>

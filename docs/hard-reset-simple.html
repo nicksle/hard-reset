@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HARD_RESET // SF</title>
+<style>
+  :root{
+    --green:#00ff88;
+    --green-dim:#0aa860;
+    --magenta:#ff5ce1;
+    --cyan:#3df0ff;
+    --amber:#ffc93c;
+    --bg:#060708;
+    --mono:'Courier New',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--green);font-family:var(--mono);
+    line-height:1.55;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:none;
+    display:flex;align-items:center;justify-content:center;padding:24px;
+  }
+  ::selection{background:var(--magenta);color:#000}
+
+  /* CRT overlays */
+  .scanlines{position:fixed;inset:0;z-index:60;pointer-events:none;
+    background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0,rgba(0,0,0,0) 2px,rgba(0,0,0,.22) 3px,rgba(0,0,0,0) 4px);mix-blend-mode:multiply}
+  .vignette{position:fixed;inset:0;z-index:59;pointer-events:none;
+    background:radial-gradient(ellipse at center,transparent 58%,rgba(0,0,0,.7) 100%)}
+
+  /* ===== INTRO ===== */
+  #intro{width:100%;max-width:640px;transition:opacity .5s}
+  #intro.out{animation:glitchout .5s steps(2) forwards}
+  @keyframes glitchout{
+    0%{opacity:1;transform:translate(0)}
+    30%{transform:translate(-5px,2px);filter:hue-rotate(80deg)}
+    55%{transform:translate(6px,-2px);filter:invert(1)}
+    80%{opacity:.5}
+    100%{opacity:0;filter:none;visibility:hidden}
+  }
+  .term{border:1px solid var(--green-dim);border-radius:8px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(0,255,136,.03),rgba(0,0,0,.25));
+    box-shadow:0 0 60px rgba(0,255,136,.10),inset 0 0 80px rgba(0,255,136,.03)}
+  .term-bar{display:flex;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--green-dim);background:rgba(0,0,0,.35)}
+  .dot{width:12px;height:12px;border-radius:50%}
+  .dot.r{background:#ff5f56}.dot.y{background:#ffbd2e}.dot.g{background:#27c93f}
+  .term-title{margin-left:10px;color:var(--green-dim);font-size:12px;letter-spacing:1px}
+  .term-body{padding:22px 24px;font-size:15px;min-height:250px}
+  #boot .line{white-space:pre-wrap}
+  .prompt{color:var(--cyan)}.ok{color:var(--green)}.warm{color:var(--magenta)}
+  .cursor{display:inline-block;width:9px;height:16px;background:var(--green);margin-left:2px;vertical-align:middle;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .init-wrap{margin-top:24px;min-height:64px}
+  .init-btn{padding:16px 32px;background:var(--magenta);color:#000;font-weight:bold;letter-spacing:2px;
+    border:none;font-family:var(--mono);font-size:16px;cursor:pointer;text-transform:uppercase;
+    opacity:0;transform:scale(.96);animation:btnin .35s .05s forwards,pulse 1.6s 1s infinite}
+  @keyframes btnin{to{opacity:1;transform:scale(1)}}
+  @keyframes pulse{0%,100%{box-shadow:0 0 20px rgba(255,92,225,.4)}50%{box-shadow:0 0 42px rgba(255,92,225,.85)}}
+  .init-btn:hover{background:var(--cyan);box-shadow:0 0 40px var(--cyan);transform:scale(1.03)}
+  .init-hint{display:block;margin-top:12px;color:var(--green-dim);font-size:12px;letter-spacing:1px}
+  .progress{color:var(--green);letter-spacing:1px}
+
+  /* ===== REVEAL ===== */
+  #home{position:fixed;inset:0;z-index:40;display:none;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:32px;opacity:0;transition:opacity .6s .1s}
+  #home.live{display:flex;opacity:1}
+  .logo{font-weight:900;font-size:clamp(52px,15vw,140px);line-height:.82;letter-spacing:-2px;color:#fff;
+    text-shadow:4px 4px 0 var(--magenta),-4px -4px 0 var(--cyan),0 0 34px rgba(255,92,225,.5);
+    opacity:0;transform:translateY(18px)}
+  .logo.in{animation:slam .5s cubic-bezier(.2,1.4,.4,1) forwards}
+  @keyframes slam{to{opacity:1;transform:translateY(0)}}
+  .tag{margin-top:16px;color:var(--green);font-size:clamp(13px,2.4vw,18px);letter-spacing:3px;opacity:0}
+  .tag.in{animation:fade .6s .18s forwards}
+  .sub{margin-top:8px;color:var(--magenta);font-size:clamp(12px,2vw,15px);letter-spacing:2px;opacity:0}
+  .sub.in{animation:fade .6s .28s forwards}
+  @keyframes fade{to{opacity:1}}
+
+  .next{margin-top:34px;border:1px solid var(--green-dim);padding:18px 26px;background:rgba(0,255,136,.03);
+    max-width:440px;width:100%;opacity:0}
+  .next.in{animation:fade .6s .4s forwards}
+  .next .label{color:var(--green-dim);font-size:11px;letter-spacing:2px}
+  .next .name{color:#fff;font-size:20px;margin:6px 0}
+  .next .meta{color:var(--cyan);font-size:14px}
+
+  .cta{margin-top:26px;opacity:0}
+  .cta.in{animation:fade .6s .5s forwards}
+  .btn{display:inline-block;padding:15px 38px;background:var(--magenta);color:#000;font-weight:bold;
+    letter-spacing:2px;border:none;font-family:var(--mono);font-size:16px;cursor:pointer;text-transform:uppercase;transition:.15s}
+  .btn:hover{background:var(--cyan);box-shadow:0 0 30px var(--cyan);transform:translate(-2px,-2px)}
+
+  .socials{margin-top:30px;display:flex;gap:22px;flex-wrap:wrap;justify-content:center;opacity:0}
+  .socials.in{animation:fade .6s .6s forwards}
+  .socials a{color:var(--green);font-size:14px;letter-spacing:1px;text-decoration:none}
+  .socials a:hover{color:var(--magenta);text-shadow:0 0 8px var(--magenta)}
+
+  .footer-note{margin-top:34px;color:var(--green-dim);font-size:12px;letter-spacing:1px;opacity:0}
+  .footer-note.in{animation:fade .6s .7s forwards}
+</style>
+</head>
+<body>
+<div class="scanlines"></div>
+<div class="vignette"></div>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="term">
+    <div class="term-bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="term-title">hard_reset — bash — 80×24</span>
+    </div>
+    <div class="term-body">
+      <div id="boot"></div>
+      <div class="init-wrap" id="initWrap"></div>
+    </div>
+  </div>
+</div>
+
+<!-- REVEAL -->
+<div id="home">
+  <h1 class="logo" id="logo">HARD<br>RESET</h1>
+  <div class="tag" id="tag">SAN FRANCISCO ELECTRONIC MUSIC</div>
+  <div class="sub" id="sub">good energy attracts good energy ♥</div>
+
+  <div class="next" id="next">
+    <div class="label">// NEXT UP</div>
+    <div class="name">HARD RESET SUNDAYS</div>
+    <div class="meta">QBar · 456 Castro St · SF · every Sunday</div>
+  </div>
+
+  <div class="cta" id="cta"><a class="btn" href="#">▸ GET TICKETS</a></div>
+
+  <div class="socials" id="socials">
+    <a href="https://instagram.com/hardresetsf" target="_blank">▸ instagram</a>
+    <a href="https://soundcloud.com/hardresetsf" target="_blank">▸ soundcloud</a>
+    <a href="https://tiktok.com/@hardresetsf" target="_blank">▸ tiktok</a>
+    <a href="https://facebook.com/hardresetsf" target="_blank">▸ facebook</a>
+  </div>
+
+  <div class="footer-note" id="fnote">// love · unity · respect · see you on the floor</div>
+</div>
+
+<script>
+  const bootLines = [
+    {t:'> hard_reset --boot',c:'prompt'},
+    {t:'  loading good vibes............. [OK]',c:'ok'},
+    {t:'  warming up the dancefloor...... [OK]',c:'ok'},
+    {t:'  syncing with San Francisco..... [OK]',c:'ok'},
+    {t:'  status: READY WHEN YOU ARE',c:'warm'},
+  ];
+  const boot = document.getElementById('boot');
+  const initWrap = document.getElementById('initWrap');
+  let li = 0, gate = false, done = false;
+
+  function nextLine(){
+    if(li >= bootLines.length){ showGate(); return; }
+    const l = bootLines[li];
+    const d = document.createElement('div');
+    d.className = 'line ' + l.c; d.textContent = l.t;
+    boot.appendChild(d); li++;
+    setTimeout(nextLine, 300);
+  }
+  function showGate(){
+    gate = true;
+    initWrap.innerHTML =
+      '<button class="init-btn" id="initBtn">▶ INITIALIZE HARD_RESET</button>' +
+      '<span class="init-hint">// or press [ ENTER ]<span class="cursor"></span></span>';
+    document.getElementById('initBtn').addEventListener('click', initialize);
+  }
+  document.addEventListener('keydown', e=>{ if(e.key==='Enter' && gate) initialize(); });
+
+  function initialize(){
+    if(done) return; done = true;
+    initWrap.innerHTML = '';
+    const steps = [
+      {t:'> initialize',c:'prompt'},
+      {t:'  gathering the crew............ [OK]',c:'ok'},
+      {t:'  cueing the first track........ [OK]',c:'ok'},
+    ];
+    let s = 0;
+    (function step(){
+      if(s < steps.length){
+        const l = steps[s];
+        const d = document.createElement('div');
+        d.className='line '+l.c; d.textContent=l.t;
+        boot.appendChild(d); s++; setTimeout(step,230);
+      } else progress();
+    })();
+
+    function progress(){
+      const p = document.createElement('div'); p.className='line progress'; boot.appendChild(p);
+      let pct=0; const bars=22;
+      const iv=setInterval(()=>{
+        pct += Math.floor(Math.random()*10)+7; if(pct>100)pct=100;
+        const f=Math.round(bars*pct/100);
+        p.textContent='  RESET ['+'█'.repeat(f)+'░'.repeat(bars-f)+'] '+String(pct).padStart(3,' ')+'%';
+        if(pct>=100){
+          clearInterval(iv);
+          const w=document.createElement('div'); w.className='line warm';
+          w.textContent='> welcome to the reset ♥'; boot.appendChild(w);
+          setTimeout(launch, 600);
+        }
+      },120);
+    }
+  }
+
+  function launch(){
+    document.getElementById('intro').classList.add('out');
+    const home=document.getElementById('home');
+    home.classList.add('live');
+    ['logo','tag','sub','next','cta','socials','fnote'].forEach(id=>document.getElementById(id).classList.add('in'));
+  }
+
+  setTimeout(nextLine, 500);
+</script>
+</body>
+</html>
