@@ -1,0 +1,29 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-xl);
+  align-items: center;
+}
+
+.copy p {
+  color: var(--green);
+  font-size: 16px;
+  margin-bottom: var(--sp-md);
+  max-width: 52ch;
+}
+
+.ascii {
+  color: var(--green-dim);
+  font-family: var(--mono-glyph);
+  font-size: 11px;
+  line-height: 1.2;
+  white-space: pre;
+  overflow: hidden;
+}
+
+@media (max-width: 760px) {
+  .grid { grid-template-columns: 1fr; gap: var(--sp-lg); }
+}
+@media (max-width: 640px) {
+  .ascii { font-size: 9px; }
+}

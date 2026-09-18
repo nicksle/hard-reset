@@ -1,0 +1,63 @@
+/* Hard Reset — design tokens.
+   Single source of truth for color, type, spacing. Every component module
+   reads from here; never hard-code a hex in a component. */
+
+:root {
+  /* --- brand color --- */
+  --green: #00ff66;
+  --green-dim: #0aa845;
+  --magenta: #ff2bd6;
+  --cyan: #0ff0fc;
+  --amber: #ffb000;
+  --red: #ff5f56;
+  --gray-500: #6b7a70;
+  --white: #ffffff;
+
+  /* --- surfaces --- */
+  --bg: #050607;
+  --bg2: #0a0d0e;
+  --bg3: #0c1014;
+
+  /* --- hairlines --- */
+  --line: var(--green-dim);
+  --line-soft: rgba(0, 255, 102, 0.14);
+
+  /* --- type --- */
+  /* Space Mono is the design system's face; Courier New is the fallback and
+     is metrically close enough that a swap doesn't jump the layout. */
+  --mono: 'Space Mono', 'Courier New', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Box-drawing (U+2500-257F) and block elements (U+2588) are not in Space
+     Mono's latin subset, so ASCII art rendered in --mono falls back per glyph
+     and the frame stops lining up. Anything drawn out of characters uses this
+     stack instead — a system mono with full coverage. */
+  --mono-glyph: ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace;
+  --fs-caps: 11px;
+  --fs-small: 13px;
+  --fs-body: 15px;
+  --track-caps: 2px;
+
+  /* --- spacing --- */
+  --sp-xs: 4px;
+  --sp-sm: 8px;
+  --sp-md: 16px;
+  --sp-lg: 24px;
+  --sp-xl: 40px;
+  --sp-2xl: 64px;
+
+  /* --- glow --- */
+  --glow-green: 0 0 6px var(--green), 0 0 18px rgba(0, 255, 102, 0.5);
+  --glow-magenta: 0 0 20px rgba(255, 43, 214, 0.35);
+  --glow-cyan: 0 0 14px rgba(15, 240, 252, 0.3);
+
+  /* --- accent slot ---
+     Components that come in four flavors (flier, DJ card, DJ profile) read
+     --acc. Set it on the element; everything inside follows. */
+  --acc: var(--magenta);
+}
+
+/* accent variants — attach to any element that owns an --acc */
+.accGreen { --acc: var(--green); }
+.accCyan { --acc: var(--cyan); }
+.accMagenta { --acc: var(--magenta); }
+.accAmber { --acc: var(--amber); }

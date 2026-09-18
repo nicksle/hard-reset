@@ -1,0 +1,21 @@
+.site {
+  opacity: 0;
+  transition: opacity 0.6s ease 0.1s;
+  position: relative;
+  z-index: 1;
+}
+
+.live { opacity: 1; }
+
+/* Semi-opaque sheet so the fixed binary canvas reads as texture behind the
+   content instead of competing with it. */
+.body {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 7, 8, 0.82) 0%,
+    rgba(6, 7, 8, 0.93) 220px,
+    rgba(6, 7, 8, 0.95) 100%
+  );
+}

@@ -1,0 +1,78 @@
+# Build react-app/ and publish it to GitHub Pages.
+#
+# The domain is a repository variable, not a value in the code, so moving the
+# site between nicksle.github.io/hard-reset/ and the custom subdomain is a
+# settings change with no commit and no rebuild of anyone's mental model:
+#
+#   Settings -> Secrets and variables -> Actions -> Variables
+#     SITE_DOMAIN = live.hardresetpresents.com   -> builds at root + writes CNAME
+#     (unset)                                    -> builds at /hard-reset/
+#
+# Set the same value in Settings -> Pages -> Custom domain, and add the CNAME
+# record in the Wix DNS panel first — see docs/HOSTING.md.
+
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'react-app/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time, newest wins. This runs on party nights.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: react-app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: react-app/package-lock.json
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Guards the failure that actually costs money: a buy button that looks
+      # live and goes nowhere.
+      - name: Ticket button contract
+        run: npm run check:tickets
+
+      - name: Build
+        run: npm run build
+        env:
+          SITE_DOMAIN: ${{ vars.SITE_DOMAIN }}
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: react-app/build/pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

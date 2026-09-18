@@ -1,0 +1,12 @@
+.canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: #000;
+  display: block;
+}
+
+/* sample source only — never painted */
+.video { display: none; }

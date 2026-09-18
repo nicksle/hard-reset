@@ -1,0 +1,36 @@
+{
+  "name": "hard-reset",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "react-router dev",
+    "build": "react-router build && node scripts/pack-pages.mjs",
+    "build:domain": "SITE_DOMAIN=live.hardresetpresents.com npm run build",
+    "preview": "vite preview --outDir build/pages",
+    "serve": "node scripts/serve-pages.mjs",
+    "serve:domain": "SITE_DOMAIN=live.hardresetpresents.com node scripts/serve-pages.mjs",
+    "typecheck": "react-router typegen && tsc --noEmit",
+    "check:tickets": "esbuild verify/buy-button.test.tsx --bundle --platform=node --format=esm --jsx=automatic --outfile=verify/.out.mjs --loader:.css=empty --loader:.svg=text --external:react --external:react-dom --external:react-router --log-level=error && node verify/.out.mjs"
+  },
+  "dependencies": {
+    "@fontsource/space-mono": "^5.3.0",
+    "isbot": "^5",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router": "^8.3.1"
+  },
+  "devDependencies": {
+    "@react-router/dev": "^8.3.1",
+    "@react-router/node": "^8.3.1",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.9.0",
+    "vite": "^7.3.6"
+  }
+}

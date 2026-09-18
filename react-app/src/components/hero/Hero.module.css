@@ -1,0 +1,35 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  padding-bottom: 40px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  will-change: transform, opacity;
+}
+
+.hint {
+  position: absolute;
+  bottom: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--green-dim);
+  font-size: 12px;
+  letter-spacing: 2px;
+  opacity: 0;
+  animation: hr-fade 0.6s 1.2s forwards, bob 2s 1.4s infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+@media (max-width: 640px) {
+  .hero { min-height: 100svh; padding: 0 6px 40px; }
+  .hint { bottom: 44px; }
+}

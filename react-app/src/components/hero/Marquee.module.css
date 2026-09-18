@@ -1,0 +1,48 @@
+.strip {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  overflow: hidden;
+  z-index: 4;
+  pointer-events: none;
+  padding: 9px 0;
+  background: rgba(6, 7, 8, 0.5);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.top { top: 0; }
+.bottom { bottom: 0; }
+
+.strip > span {
+  display: inline-block;
+  white-space: nowrap;
+  color: var(--magenta);
+  font-weight: 700;
+  letter-spacing: 4px;
+  font-size: 14px;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(255, 43, 214, 0.4);
+}
+
+.unit { display: inline; }
+
+.top > span { animation: mqL 26s linear infinite; }
+.bottom > span { animation: mqR 32s linear infinite; }
+
+@keyframes mqL { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes mqR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+.glyph {
+  height: 0.8em;
+  width: auto;
+  vertical-align: middle;
+  margin: 0 0.55em;
+  fill: currentColor;
+  shape-rendering: crispEdges;
+}
+
+@media (max-width: 640px) {
+  .strip > span { font-size: 12px; letter-spacing: 2px; }
+}

@@ -1,0 +1,32 @@
+/* Space Mono — the design system's body face.
+ *
+ * Self-hosted rather than pulled from the Google Fonts CDN: the site is fully
+ * static, so a third-party request on every visit buys nothing and costs a DNS
+ * lookup, a connection, and a privacy footnote. The files come from the
+ * @fontsource/space-mono package, which carries the OFL license with them.
+ *
+ * Latin only — the site has no other scripts. If copy ever needs the extended
+ * set, add the -latin-ext- files as a second @font-face with a unicode-range.
+ *
+ * font-display: swap is deliberate. The boot terminal waits 500ms before its
+ * first line and the woff2 files are preloaded from the same origin (see the
+ * links() export in root.tsx), so in practice the font wins that race and
+ * nothing swaps. swap is just the safe failure mode if it doesn't: readable
+ * fallback text beats invisible text.
+ */
+
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('@fontsource/space-mono/files/space-mono-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('@fontsource/space-mono/files/space-mono-latin-700-normal.woff2') format('woff2');
+}

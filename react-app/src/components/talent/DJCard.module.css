@@ -1,0 +1,99 @@
+.card {
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--acc);
+  background: linear-gradient(160deg, var(--bg3), #060708 70%);
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* accent bloom in the top corner */
+.card::after {
+  content: '';
+  position: absolute;
+  right: -20%;
+  top: -18%;
+  width: 70%;
+  height: 50%;
+  background: radial-gradient(ellipse, var(--acc), transparent 70%);
+  opacity: 0.14;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: var(--bg2);
+  z-index: 0;
+}
+
+/* scrim so type stays readable over any photo */
+.hasPhoto::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 7, 8, 0.3) 0%,
+    rgba(6, 7, 8, 0) 26%,
+    rgba(6, 7, 8, 0.5) 64%,
+    rgba(6, 7, 8, 0.94) 100%
+  );
+}
+
+.hasPhoto > *:not(.photo) { position: relative; z-index: 2; }
+.hasPhoto .name { margin: auto 0 0; }
+
+.kicker {
+  font-size: var(--fs-caps);
+  letter-spacing: var(--track-caps);
+  color: var(--acc);
+  position: relative;
+}
+
+.name {
+  font-weight: 900;
+  font-size: 34px;
+  line-height: 0.95;
+  letter-spacing: -1px;
+  color: #fff;
+  margin: 16px 0 auto;
+  text-shadow: 3px 3px 0 var(--acc);
+  word-break: break-word;
+  position: relative;
+}
+
+.role {
+  font-size: var(--fs-small);
+  color: #c9d1d0;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  position: relative;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border: 1px solid var(--acc);
+  color: var(--acc);
+}
+.past { border-color: var(--green-dim); color: var(--green-dim); }
+
+.no { font-size: var(--fs-caps); color: var(--green-dim); }

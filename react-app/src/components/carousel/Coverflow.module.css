@@ -1,0 +1,48 @@
+.carousel { position: relative; width: 100%; }
+
+.stage {
+  position: relative;
+  height: min(52vh, 430px);
+  overflow: hidden;
+  margin-top: 4px;
+  touch-action: pan-y;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  cursor: pointer;
+  will-change: transform;
+  border: 1px solid transparent;
+  padding: 8px;
+  background: var(--bg2);
+  overflow: visible;
+  transition:
+    transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.5s,
+    border-color 0.3s;
+}
+
+.card > * { width: 100%; }
+
+.focus {
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+  border-color: var(--green);
+}
+
+/* dims every card that isn't focused */
+.veil {
+  position: absolute;
+  inset: 0;
+  background: #060708;
+  transition: opacity 0.5s;
+  pointer-events: none;
+  z-index: 3;
+}

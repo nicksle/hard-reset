@@ -1,0 +1,13 @@
+.badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--track-caps);
+  padding: 5px 14px;
+  border: 1px solid var(--amber);
+  color: var(--amber);
+}
+
+.live { border-color: var(--magenta); color: var(--magenta); }
+.sold { border-color: var(--red); color: var(--red); }
+.past { border-color: var(--gray-500); color: var(--gray-500); }
+.early { border-color: var(--amber); color: var(--amber); }
