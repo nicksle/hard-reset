@@ -5,3 +5,5 @@ dist
 .DS_Store
 *.tgz
 verify/.out.mjs
+verify/.content.mjs
+verify/tmp/

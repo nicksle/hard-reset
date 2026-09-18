@@ -14,7 +14,8 @@
     "serve": "node scripts/serve-pages.mjs",
     "serve:domain": "SITE_DOMAIN=live.hardresetpresents.com node scripts/serve-pages.mjs",
     "typecheck": "react-router typegen && tsc --noEmit",
-    "check:tickets": "esbuild verify/buy-button.test.tsx --bundle --platform=node --format=esm --jsx=automatic --outfile=verify/.out.mjs --loader:.css=empty --loader:.svg=text --external:react --external:react-dom --external:react-router --log-level=error && node verify/.out.mjs"
+    "check:tickets": "esbuild verify/buy-button.test.tsx --bundle --platform=node --format=esm --jsx=automatic --outfile=verify/.out.mjs --loader:.css=empty --loader:.svg=text --external:react --external:react-dom --external:react-router --log-level=error && node verify/.out.mjs",
+    "check:content": "esbuild verify/content.check.ts --bundle --platform=node --format=esm --outfile=verify/.content.mjs --loader:.css=empty --log-level=error && node verify/.content.mjs"
   },
   "dependencies": {
     "@fontsource/space-mono": "^5.3.0",

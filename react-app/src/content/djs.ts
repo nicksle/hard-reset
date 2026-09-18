@@ -1,138 +1,66 @@
+import rawDJs from './data/djs.json'
 import { asset } from '../utils/asset'
-import type { DJ } from './types'
+import {
+  at, obj, text, textOrNull, flag, oneOf, publicPath, uniqueIds, singleNext,
+} from './load'
+import type { DJ, DJSocials } from './types'
 
-/* The roster. Order here is the carousel order.
- * accent: 'green' | 'cyan' | 'magenta' | 'amber' — drives the card's --acc.
- * tag: 'RESIDENT' | 'GUEST' | 'PAST'
- * photo: path under /public, or null for a typographic (no-photo) card.
- * track: SoundCloud URL the profile player loads.
+/* The roster. Order in data/djs.json is the carousel order — drag to reorder
+ * in the admin UI at /admin. Adding an entry adds a prerendered /talent/<id>
+ * page; see docs/CONTENT.md.
+ *
+ * accent  drives the card's --acc
+ * photo   path under /public, or empty for a typographic (no-photo) card
+ * track   SoundCloud URL the profile player loads
  */
 
 export const DJ_DEFAULT_TRACK = 'https://soundcloud.com/forss/flickermood'
 
-export const DJS: DJ[] = [
-  {
-    id: 'summers',
-    name: 'SUMMERS',
-    kicker: '// RESIDENT',
-    genre: 'TECH HOUSE',
-    city: 'SF',
-    tag: 'RESIDENT',
-    accent: 'magenta',
-    photo: asset('media/dj-01.jpg'),
-    track: DJ_DEFAULT_TRACK,
-    socials: { soundcloud: '#', instagram: '#', spotify: '#' },
-    next: true,
-  },
-  {
-    id: 'cat-liu',
-    name: 'CAT LIU',
-    kicker: '// RESIDENT',
-    genre: 'HOUSE',
-    city: 'SF',
-    tag: 'RESIDENT',
-    accent: 'cyan',
-    photo: asset('media/dj-02.jpg'),
-    track: DJ_DEFAULT_TRACK,
-    socials: { soundcloud: '#', instagram: '#', spotify: '#' },
-  },
-  {
-    id: 'sergi-ooh',
-    name: 'SERGI (OOH)',
-    kicker: '// RESIDENT',
-    genre: 'TECHNO',
-    city: 'SF',
-    tag: 'RESIDENT',
-    accent: 'green',
-    photo: asset('media/dj-03.jpg'),
-    track: DJ_DEFAULT_TRACK,
-    socials: { soundcloud: '#', instagram: '#', spotify: '#' },
-  },
-  {
-    id: 'vrok',
-    name: 'VROK',
-    kicker: '// RESIDENT',
-    genre: 'INDIE DANCE',
-    city: 'SF',
-    tag: 'RESIDENT',
-    accent: 'amber',
-    photo: null,
-    track: DJ_DEFAULT_TRACK,
-    socials: { soundcloud: '#', instagram: '#', spotify: '#' },
-  },
-  {
-    id: 'void-sys',
-    name: 'VOID.SYS',
-    kicker: '// GUEST',
-    genre: 'TECHNO',
-    city: null,
-    tag: 'GUEST',
-    accent: 'cyan',
-    photo: null,
-    track: DJ_DEFAULT_TRACK,
-    socials: { soundcloud: '#', instagram: '#', spotify: '#' },
-  },
-  {
-    id: 'analog-decay',
-    name: 'ANALOG_DECAY',
-    kicker: '// GUEST',
-    genre: 'ELECTRO',
-    city: null,
-    tag: 'GUEST',
-    accent: 'magenta',
-    photo: null,
-    track: DJ_DEFAULT_TRACK,
-    socials: { soundcloud: '#', instagram: '#', spotify: '#' },
-  },
-  {
-    id: 'kt-909',
-    name: 'KT-909',
-    kicker: '// GUEST',
-    genre: 'ACID / LIVE',
-    city: null,
-    tag: 'GUEST',
-    accent: 'green',
-    photo: null,
-    track: DJ_DEFAULT_TRACK,
-    socials: { soundcloud: '#', instagram: '#', spotify: '#' },
-  },
-  {
-    id: '303-queen',
-    name: '303_QUEEN',
-    kicker: '// GUEST',
-    genre: 'ACID HOUSE',
-    city: null,
-    tag: 'PAST',
-    accent: 'amber',
-    photo: null,
-    track: DJ_DEFAULT_TRACK,
-    socials: { soundcloud: '#', instagram: '#', spotify: '#' },
-  },
-  {
-    id: 'modular-moth',
-    name: 'MODULAR_MOTH',
-    kicker: '// GUEST',
-    genre: 'AMBIENT TECHNO',
-    city: null,
-    tag: 'PAST',
-    accent: 'cyan',
-    photo: null,
-    track: DJ_DEFAULT_TRACK,
-    socials: { soundcloud: '#', instagram: '#', spotify: '#' },
-  },
-  {
-    id: 'sysadmin',
-    name: 'SYSADMIN',
-    kicker: '// GUEST',
-    genre: 'TECHNO',
-    city: null,
-    tag: 'PAST',
-    accent: 'magenta',
-    photo: null,
-    track: DJ_DEFAULT_TRACK,
-    socials: { soundcloud: '#', instagram: '#', spotify: '#' },
-  },
-]
+const TAGS = ['RESIDENT', 'GUEST', 'PAST'] as const
+const ACCENTS = ['green', 'cyan', 'magenta', 'amber'] as const
+
+/* Socials are optional per-network and a '#' placeholder is the same as absent
+ * — DJProfile maps over whatever is here, so a kept '#' renders a button that
+ * goes nowhere. Same reasoning as ticketHref. */
+function parseSocials(raw: unknown, where: string): DJSocials {
+  if (raw == null) return {}
+  const o = obj(raw, `${where} socials`)
+  const out: DJSocials = {}
+  for (const key of ['soundcloud', 'instagram', 'spotify'] as const) {
+    const v = o[key]
+    if (typeof v === 'string' && v.trim() !== '' && v.trim() !== '#') {
+      out[key] = v.trim()
+    }
+  }
+  return out
+}
+
+function parseDJ(raw: unknown, i: number): DJ {
+  const probe = obj(raw, at('djs.json', i))
+  const where = at('djs.json', i, probe.id)
+  const o = obj(raw, where)
+  const photo = textOrNull(o, 'photo', where)
+  const track = textOrNull(o, 'track', where)
+
+  return {
+    id: text(o, 'id', where),
+    name: text(o, 'name', where),
+    kicker: text(o, 'kicker', where),
+    genre: text(o, 'genre', where),
+    city: textOrNull(o, 'city', where),
+    tag: oneOf(TAGS, o, 'tag', where),
+    accent: oneOf(ACCENTS, o, 'accent', where),
+    photo: photo ? asset(publicPath(photo)) : null,
+    track: track ?? DJ_DEFAULT_TRACK,
+    socials: parseSocials(o.socials, where),
+    next: flag(o, 'next', where),
+  }
+}
+
+export const DJS: DJ[] = singleNext(
+  'djs.json',
+  uniqueIds('djs.json', (rawDJs.djs as unknown[]).map(parseDJ)),
+)
 
 export const findDJ = (id: string | undefined): DJ | undefined =>
   id ? DJS.find((d) => d.id === id) : undefined

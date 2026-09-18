@@ -9,6 +9,7 @@ static files for GitHub Pages.
 npm install
 npm run dev            # http://localhost:5173/hard-reset/
 npm run typecheck      # route typegen + tsc
+npm run check:content  # validate events.json / djs.json
 npm run check:tickets  # the buy-button contract
 npm run build          # prerender + pack for Pages
 npm run build:domain   # ...for live.hardresetpresents.com (root + CNAME)
@@ -56,6 +57,7 @@ src/
     layout/              Section / Wrap / SectionHead / PanelModule
     ui/                  TerminalWindow, Overlay, StatusBadge, Equalizer, Reveal
   utils/                 accent map, public-asset path helper
+public/admin/            Sveltia CMS — the editing UI, shipped with the site
 public/media/            hero video, fliers, DJ photos, world/01..21.jpg
 ```
 
@@ -71,11 +73,18 @@ public/media/            hero video, fliers, DJ photos, world/01..21.jpg
   up. The About panel's art uses `--mono-glyph` for exactly this reason.
 - **Public assets go through `asset()`** (`src/utils/asset.ts`) so they respect
   the base path. A bare `/media/...` string 404s on Pages.
-- **Content is data.** A new party is an object in `content/events.ts`; a new
-  DJ is an object in `content/djs.ts`. Set `next: true` on exactly one of each
-  to say where the carousels open.
+- **Content is data, and it is no longer ours.** Parties and DJs live in
+  `content/data/*.json` and are edited through the admin at `/admin` by people
+  who don't have a checkout — so treat that JSON as untrusted input. Everything
+  passes through `content/load.ts`, which validates and throws at build time
+  with the file, entry and field named. Add fields there, not in components.
+  See [`docs/CONTENT.md`](../docs/CONTENT.md).
 - **One coverflow.** Both carousels are `<Coverflow>` with a different
   `renderCard`. Motion changes land in `hooks/useCoverflow.ts` and apply to both.
+- **Carousel input is scoped to the carousel.** Both decks are mounted at once,
+  so a key listener on `window` gets one press and moves both — arrows are a
+  React handler on the carousel root, and DOM focus travels with the selection
+  because only the active card is tabbable.
 - **Vertical scroll is never intercepted.** `useCoverflow` listens for `wheel`
   but returns early unless the gesture is predominantly horizontal. Don't
   "simplify" that check away.
@@ -154,10 +163,13 @@ transfer, not as paint.
 
 - **No ticket URLs are filled in yet.** The button is wired — it reads
   `ticketUrl`, opens the Wix event page in a new tab, and renders *nothing*
-  when the URL is missing. But every event in `content/events.ts` is still
-  `null`, so no buy button appears anywhere. Wix slugs carry an unpredictable
-  suffix and have to be copied out of the Wix dashboard by hand; the comment
-  at the top of `content/events.ts` says where from.
+  when the URL is missing. But every event is still `null`, so no buy button
+  appears anywhere. `npm run check:content` prints which parties are selling
+  without a link on every build.
+- **The admin has no "sign in with GitHub" button yet** — editors paste a
+  personal access token instead. Adding the button means deploying
+  `sveltia-cms-auth` as a Cloudflare Worker and registering a GitHub OAuth app;
+  worth it when there's a third editor, not before.
 - `og:image` for events points at the placeholder flier **SVG**, which most
   unfurlers won't render. Low priority while site links aren't the share path.
 - Signup form has no backend — `SignupSection.submit` is the hook point.

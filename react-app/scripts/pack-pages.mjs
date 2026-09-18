@@ -90,6 +90,8 @@ await writeFile(join(OUT, '.nojekyll'), '')
 const pages = []
 const walk = async (dir, base = '') => {
   for (const e of await readdir(dir, { withFileTypes: true })) {
+    // /admin is the CMS, copied verbatim from public/ — not a prerendered route
+    if (e.isDirectory() && base === '' && e.name === 'admin') continue
     if (e.isDirectory()) await walk(join(dir, e.name), `${base}/${e.name}`)
     else if (e.name === 'index.html') pages.push(base || '/')
   }

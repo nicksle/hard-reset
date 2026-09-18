@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { useCoverflow } from '../../hooks/useCoverflow'
 import type { OverlayPhase } from '../../hooks/useOverlay'
@@ -10,6 +10,10 @@ import styles from './Coverflow.module.css'
  * Clicking a neighbor focuses it; clicking the focused card calls onOpenActive.
  * While `overlayPhase` is 'open', the deck plays its exit: neighbors fade, then
  * the focused card collapses vertically into the terminal window.
+ *
+ * Keyboard is scoped to this carousel rather than to window — see useCoverflow.
+ * Only the active card is tabbable, so stepping with arrows has to carry DOM
+ * focus along with the selection or the second press goes nowhere.
  */
 
 interface CoverflowProps<T> {
@@ -34,10 +38,22 @@ export function Coverflow<T extends { id: string }>({
   const exiting = overlayPhase === 'open'
   const cf = useCoverflow(items.length, { initialIndex: activeIndex, enabled: !exiting })
 
+  const rootRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+
   // The parent owns the selection (a deep link can set it), so keep the two in
   // sync in both directions.
   useEffect(() => { cf.setActive(activeIndex) }, [activeIndex]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { onActiveChange(cf.active) }, [cf.active]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* Move DOM focus with the selection — but only if this carousel already has
+   * it. Without the containment check, a deep link or the other deck's state
+   * settling would steal focus and scroll the page to this carousel. */
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root || !root.contains(document.activeElement)) return
+    cardRefs.current[cf.active]?.focus({ preventScroll: true })
+  }, [cf.active])
 
   const handleClick = (i: number) => {
     if (cf.wasDragged()) return
@@ -46,7 +62,7 @@ export function Coverflow<T extends { id: string }>({
   }
 
   return (
-    <div className={styles.carousel}>
+    <div className={styles.carousel} ref={rootRef} onKeyDown={cf.onKeyDown}>
       <div
         className={styles.stage}
         style={{ ...cf.stageStyle, pointerEvents: exiting ? 'none' : undefined }}
@@ -60,6 +76,7 @@ export function Coverflow<T extends { id: string }>({
             return (
               <div
                 key={item.id}
+                ref={(el) => { cardRefs.current[i] = el }}
                 role="option"
                 aria-selected={isActive}
                 tabIndex={isActive ? 0 : -1}
@@ -67,6 +84,7 @@ export function Coverflow<T extends { id: string }>({
                 style={exitStyle(base, exiting, isActive)}
                 onClick={() => handleClick(i)}
                 onKeyDown={(e) => {
+                  // Arrows bubble to the root handler; this is open-only.
                   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(i) }
                 }}
               >

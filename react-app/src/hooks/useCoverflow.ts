@@ -24,6 +24,7 @@ export interface CoverflowApi {
   cardStyle: (i: number) => CSSProperties
   veilOpacity: (i: number) => number
   onPointerDown: (e: React.PointerEvent) => void
+  onKeyDown: (e: React.KeyboardEvent) => void
   wasDragged: () => boolean
   metrics: Metrics
 }
@@ -115,16 +116,24 @@ export function useCoverflow(
     }
   }, [move, enabled])
 
-  // --- keyboard -----------------------------------------------------------
-  useEffect(() => {
-    if (!enabled) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') move(-1)
-      else if (e.key === 'ArrowRight') move(1)
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [move, enabled])
+  /* --- keyboard ----------------------------------------------------------
+   *
+   * This is a React handler on the carousel root, NOT a window listener.
+   * Both carousels are mounted at the same time, so a listener on window gets
+   * one keypress and moves both decks — pressing Right on the parties deck
+   * silently advanced the DJ deck too. Arrows now only move the carousel that
+   * actually holds focus, which is also what a listbox is supposed to do.
+   */
+  const onKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (!enabled) return
+      if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1) }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); move(1) }
+      else if (e.key === 'Home') { e.preventDefault(); setActive(0) }
+      else if (e.key === 'End') { e.preventDefault(); setActive(count - 1) }
+    },
+    [move, enabled, count],
+  )
 
   // --- per-card transform -------------------------------------------------
   const { W, H, SP } = metrics
@@ -171,7 +180,7 @@ export function useCoverflow(
     active, setActive, move,
     stageRef, stageStyle,
     cardStyle, veilOpacity,
-    onPointerDown, wasDragged,
+    onPointerDown, onKeyDown, wasDragged,
     metrics,
   }
 }

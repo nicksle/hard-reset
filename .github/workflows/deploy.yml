@@ -51,6 +51,12 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      # Content comes from the CMS, so it is untrusted input to the build.
+      # This fails in seconds naming the file, entry and field, rather than
+      # 40s into a prerender with the error buried under Vite output.
+      - name: Validate content
+        run: npm run check:content
+
       # Guards the failure that actually costs money: a buy button that looks
       # live and goes nowhere.
       - name: Ticket button contract

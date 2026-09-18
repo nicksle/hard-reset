@@ -1,0 +1,175 @@
+# Content admin for the Hard Reset site — served at <site>/admin/
+#
+# Saving here commits straight to `main`, and a push under react-app/ triggers
+# .github/workflows/deploy.yml, so the live site follows a couple of minutes
+# later. There is no separate publish step and no draft state: if you save it,
+# it ships.
+#
+# Sign in with a GitHub personal access token — no server to run, nothing to
+# host. docs/CONTENT.md has the walkthrough.
+
+backend:
+  name: github
+  repo: nicksle/hard-reset
+  branch: main
+  commit_messages:
+    create: 'content: add {{collection}} "{{slug}}"'
+    update: 'content: update {{collection}} "{{slug}}"'
+    delete: 'content: remove {{collection}} "{{slug}}"'
+    uploadMedia: 'content: upload {{path}}'
+    deleteMedia: 'content: remove {{path}}'
+
+# Paths are relative to the REPO ROOT, not to this file.
+media_folder: react-app/public/media
+# Stored with a leading slash and stripped again in src/content/load.ts —
+# the site is served from two different base paths, so the prefix is applied
+# at build time rather than baked into the data. See site.config.mjs.
+public_folder: /media
+
+collections:
+  - name: parties
+    label: Parties
+    label_singular: party
+    icon: local_activity
+    files:
+      - name: events
+        label: All parties
+        file: react-app/src/content/data/events.json
+        description: >-
+          Carousel order is the order below — drag to rearrange. The party with
+          "Open the carousel here" ticked is the one the deck lands on.
+        fields:
+          - name: events
+            label: Parties
+            label_singular: party
+            widget: list
+            summary: '{{fields.date}} — {{fields.venue}} ({{fields.status}})'
+            fields:
+              - name: id
+                label: URL slug
+                widget: string
+                hint: >-
+                  This is the web address people share (/parties/overclock-oct-17).
+                  Never change it on a party that has already been posted — every
+                  existing link breaks.
+                pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'lowercase words separated by hyphens']
+              - name: date
+                label: Date line
+                widget: string
+                hint: Shown exactly as typed, e.g. SAT · OCT 17 · 2026
+              - name: venue
+                label: Venue
+                widget: string
+                hint: e.g. THE CAFÉ · SF, or [UNDISCLOSED WAREHOUSE] · SF
+              - name: status
+                label: Status
+                widget: select
+                options: ['TICKETS LIVE', 'EARLY BIRD', 'SOLD OUT', 'PAST']
+                default: EARLY BIRD
+              - name: price
+                label: Price line
+                widget: string
+                hint: e.g. $15 PRESALE · $20 DOOR — or SOLD OUT / PAST EVENT
+              - name: flier
+                label: Flier
+                widget: image
+                hint: Portrait, roughly 1080×1350.
+              - name: ticketUrl
+                label: Wix ticket link
+                widget: string
+                required: false
+                hint: >-
+                  Copy the event page link out of the Wix dashboard (Events →
+                  the event → Share). Leave this empty until you have it — the
+                  BUY TICKETS button hides itself rather than linking nowhere.
+              - name: startsAt
+                label: Doors open
+                widget: datetime
+                required: false
+                hint: Only the next party needs this — it drives the countdown.
+              - name: lineup
+                label: Lineup
+                widget: list
+                summary: '{{fields.name}} — {{fields.role}}'
+                fields:
+                  - { name: name, label: Name, widget: string }
+                  - { name: role, label: Genre / slot, widget: string }
+              - name: next
+                label: Open the carousel here
+                widget: boolean
+                default: false
+                required: false
+                hint: Tick this on exactly one party.
+
+  - name: talent
+    label: DJs
+    label_singular: DJ
+    icon: album
+    files:
+      - name: djs
+        label: All DJs
+        file: react-app/src/content/data/djs.json
+        description: Carousel order is the order below — drag to rearrange.
+        fields:
+          - name: djs
+            label: DJs
+            label_singular: DJ
+            widget: list
+            summary: '{{fields.name}} — {{fields.genre}} ({{fields.tag}})'
+            fields:
+              - name: id
+                label: URL slug
+                widget: string
+                hint: >-
+                  The shared web address (/talent/summers). Don't change it once
+                  the profile has been posted anywhere.
+                pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'lowercase words separated by hyphens']
+              - { name: name, label: Name, widget: string }
+              - name: kicker
+                label: Kicker
+                widget: string
+                default: '// RESIDENT'
+                hint: The small line above the name.
+              - { name: genre, label: Genre, widget: string }
+              - name: city
+                label: City
+                widget: string
+                required: false
+                default: SF
+              - name: tag
+                label: Tag
+                widget: select
+                options: ['RESIDENT', 'GUEST', 'PAST']
+                default: GUEST
+              - name: accent
+                label: Accent colour
+                widget: select
+                options: ['green', 'cyan', 'magenta', 'amber']
+                default: green
+              - name: photo
+                label: Photo
+                widget: image
+                required: false
+                hint: >-
+                  Leave empty for the typographic card — that's a deliberate
+                  look, not a missing image.
+              - name: track
+                label: SoundCloud track
+                widget: string
+                required: false
+                hint: Full SoundCloud URL. Empty falls back to the house default.
+              - name: socials
+                label: Links
+                widget: object
+                required: false
+                collapsed: true
+                fields:
+                  - { name: soundcloud, label: SoundCloud, widget: string, required: false }
+                  - { name: instagram, label: Instagram, widget: string, required: false }
+                  - { name: spotify, label: Spotify, widget: string, required: false }
+              - name: next
+                label: Open the carousel here
+                widget: boolean
+                default: false
+                required: false
+                hint: Tick this on exactly one DJ.
