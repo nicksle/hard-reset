@@ -9,29 +9,33 @@
       "tag": "RESIDENT",
       "accent": "magenta",
       "photo": "media/dj-01.jpg",
-      "track": "https://soundcloud.com/forss/flickermood",
-      "socials": {
-        "soundcloud": "#",
-        "instagram": "#",
-        "spotify": "#"
-      },
+      "track": null,
+      "socials": {},
       "next": true
     },
     {
-      "id": "cat-liu",
-      "name": "CAT LIU",
+      "id": "giovanni-sainz",
+      "name": "GIOVANNI SAINZ",
       "kicker": "// RESIDENT",
       "genre": "HOUSE",
       "city": "SF",
       "tag": "RESIDENT",
       "accent": "cyan",
-      "photo": "media/dj-02.jpg",
-      "track": "https://soundcloud.com/forss/flickermood",
-      "socials": {
-        "soundcloud": "#",
-        "instagram": "#",
-        "spotify": "#"
-      }
+      "photo": null,
+      "track": null,
+      "socials": {}
+    },
+    {
+      "id": "seajay",
+      "name": "SEAJAY",
+      "kicker": "// GUEST",
+      "genre": "ELECTRO",
+      "city": "SF",
+      "tag": "GUEST",
+      "accent": "amber",
+      "photo": null,
+      "track": null,
+      "socials": {}
     },
     {
       "id": "sergi-ooh",
@@ -42,12 +46,8 @@
       "tag": "RESIDENT",
       "accent": "green",
       "photo": "media/dj-03.jpg",
-      "track": "https://soundcloud.com/forss/flickermood",
-      "socials": {
-        "soundcloud": "#",
-        "instagram": "#",
-        "spotify": "#"
-      }
+      "track": null,
+      "socials": {}
     },
     {
       "id": "vrok",
@@ -56,110 +56,22 @@
       "genre": "INDIE DANCE",
       "city": "SF",
       "tag": "RESIDENT",
-      "accent": "amber",
+      "accent": "magenta",
       "photo": null,
-      "track": "https://soundcloud.com/forss/flickermood",
-      "socials": {
-        "soundcloud": "#",
-        "instagram": "#",
-        "spotify": "#"
-      }
+      "track": null,
+      "socials": {}
     },
     {
-      "id": "void-sys",
-      "name": "VOID.SYS",
+      "id": "david-olivera",
+      "name": "DAVID OLIVERA",
       "kicker": "// GUEST",
-      "genre": "TECHNO",
-      "city": null,
+      "genre": "HOUSE",
+      "city": "SF",
       "tag": "GUEST",
       "accent": "cyan",
       "photo": null,
-      "track": "https://soundcloud.com/forss/flickermood",
-      "socials": {
-        "soundcloud": "#",
-        "instagram": "#",
-        "spotify": "#"
-      }
-    },
-    {
-      "id": "analog-decay",
-      "name": "ANALOG_DECAY",
-      "kicker": "// GUEST",
-      "genre": "ELECTRO",
-      "city": null,
-      "tag": "GUEST",
-      "accent": "magenta",
-      "photo": null,
-      "track": "https://soundcloud.com/forss/flickermood",
-      "socials": {
-        "soundcloud": "#",
-        "instagram": "#",
-        "spotify": "#"
-      }
-    },
-    {
-      "id": "kt-909",
-      "name": "KT-909",
-      "kicker": "// GUEST",
-      "genre": "ACID / LIVE",
-      "city": null,
-      "tag": "GUEST",
-      "accent": "green",
-      "photo": null,
-      "track": "https://soundcloud.com/forss/flickermood",
-      "socials": {
-        "soundcloud": "#",
-        "instagram": "#",
-        "spotify": "#"
-      }
-    },
-    {
-      "id": "303-queen",
-      "name": "303_QUEEN",
-      "kicker": "// GUEST",
-      "genre": "ACID HOUSE",
-      "city": null,
-      "tag": "PAST",
-      "accent": "amber",
-      "photo": null,
-      "track": "https://soundcloud.com/forss/flickermood",
-      "socials": {
-        "soundcloud": "#",
-        "instagram": "#",
-        "spotify": "#"
-      }
-    },
-    {
-      "id": "modular-moth",
-      "name": "MODULAR_MOTH",
-      "kicker": "// GUEST",
-      "genre": "AMBIENT TECHNO",
-      "city": null,
-      "tag": "PAST",
-      "accent": "cyan",
-      "photo": null,
-      "track": "https://soundcloud.com/forss/flickermood",
-      "socials": {
-        "soundcloud": "#",
-        "instagram": "#",
-        "spotify": "#"
-      }
-    },
-    {
-      "id": "sysadmin",
-      "name": "SYSADMIN",
-      "kicker": "// GUEST",
-      "genre": "TECHNO",
-      "city": null,
-      "tag": "PAST",
-      "accent": "magenta",
-      "photo": null,
-      "track": "https://soundcloud.com/forss/flickermood",
-      "socials": {
-        "soundcloud": "#",
-        "instagram": "#",
-        "spotify": "#"
-      }
+      "track": null,
+      "socials": {}
     }
   ]
 }

@@ -1,127 +1,49 @@
 {
   "events": [
     {
-      "id": "the-cafe-may-30",
-      "date": "FRI · MAY 30 · 2026",
-      "venue": "THE CAFÉ · SF",
+      "id": "qbar-2026-09-20",
+      "date": "SUN · SEP 20 · 2026",
+      "venue": "Q-BAR · CASTRO · SF",
       "status": "PAST",
       "price": "PAST EVENT",
-      "flier": "media/flier-placeholder.svg",
+      "flier": "media/flier-2026-09-20.jpg",
       "ticketUrl": null,
       "lineup": [
+        {
+          "name": "KYON",
+          "role": "TRANCE"
+        },
+        {
+          "name": "OLEKSANDER",
+          "role": "TRANCE"
+        },
         {
           "name": "SUMMERS",
-          "role": "TECH HOUSE"
-        },
-        {
-          "name": "SEAJAY",
-          "role": "ELECTRO"
-        },
-        {
-          "name": "V0RTEX",
-          "role": "TECHNO"
+          "role": "TRANCE"
         }
       ]
     },
     {
-      "id": "decodance-jul-19",
-      "date": "SAT · JUL 19 · 2026",
-      "venue": "DECODANCE · SF",
+      "id": "qbar-2026-09-25",
+      "next": true,
+      "date": "SEP 25 · 2026",
+      "venue": "Q-BAR · CASTRO · SF",
       "status": "PAST",
       "price": "PAST EVENT",
-      "flier": "media/flier-placeholder.svg",
+      "flier": "media/flier-2026-09-25.jpg",
       "ticketUrl": null,
       "lineup": [
         {
-          "name": "GIOVANNI SAINZ",
-          "role": "HOUSE"
+          "name": "CLUB DU",
+          "role": "HOUSE / TECH HOUSE"
         },
         {
-          "name": "KT-909",
-          "role": "ACID"
+          "name": "SUMMERS",
+          "role": "HOUSE / TECH HOUSE"
         },
         {
-          "name": "NULLBYTE",
-          "role": "INDIE DANCE"
-        }
-      ]
-    },
-    {
-      "id": "the-bunker-sep-12",
-      "date": "SAT · SEP 12 · 2026",
-      "venue": "THE BUNKER · OAKLAND",
-      "status": "SOLD OUT",
-      "price": "SOLD OUT",
-      "flier": "media/flier-placeholder.svg",
-      "ticketUrl": null,
-      "lineup": [
-        {
-          "name": "MODULAR_MOTH",
-          "role": "MODULAR"
-        },
-        {
-          "name": "303_QUEEN",
-          "role": "ACID TECHNO"
-        },
-        {
-          "name": "SYSADMIN",
-          "role": "TECHNO"
-        },
-        {
-          "name": "SEAJAY",
-          "role": "ELECTRO"
-        }
-      ]
-    },
-    {
-      "id": "overclock-oct-17",
-      "next": true,
-      "date": "SAT · OCT 17 · 2026",
-      "startsAt": "2026-10-17T22:00:00-07:00",
-      "venue": "[UNDISCLOSED WAREHOUSE] · SF",
-      "status": "TICKETS LIVE",
-      "price": "$15 PRESALE · $20 DOOR",
-      "flier": "media/flier-placeholder.svg",
-      "ticketUrl": null,
-      "lineup": [
-        {
-          "name": "V0ID.SYS",
-          "role": "HARD TECHNO"
-        },
-        {
-          "name": "ANALOG_DECAY",
-          "role": "ELECTRO"
-        },
-        {
-          "name": "KT-909",
-          "role": "ACID"
-        },
-        {
-          "name": "RESET RESIDENTS",
-          "role": "B2B"
-        }
-      ]
-    },
-    {
-      "id": "nov-21",
-      "date": "FRI · NOV 21 · 2026",
-      "venue": "LOCATION 24H PRIOR · SF",
-      "status": "EARLY BIRD",
-      "price": "EARLY BIRD $12",
-      "flier": "media/flier-placeholder.svg",
-      "ticketUrl": null,
-      "lineup": [
-        {
-          "name": "TBA",
-          "role": "HEADLINER"
-        },
-        {
-          "name": "RESET RESIDENTS",
-          "role": "OPENING"
-        },
-        {
-          "name": "+ SPECIAL GUESTS",
-          "role": "LIVE"
+          "name": "JONNY CANAS",
+          "role": "HOUSE / TECH HOUSE"
         }
       ]
     }
