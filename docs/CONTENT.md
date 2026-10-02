@@ -64,6 +64,11 @@ reads as broken checkout to someone who found the party off a flier, and they
 don't try again. An announced party with no button is fine; a dead button is
 not.
 
+**Keep the link after the party.** Once a party is set to PAST or SOLD OUT,
+the button becomes a quieter **VIEW EVENT PAGE** link to the same Wix page, so
+people can still find the details. It never says BUY on a party you can't buy
+tickets for.
+
 ## Adding a DJ
 
 **DJs → All DJs → Add DJ.** Same idea — list order is carousel order.
