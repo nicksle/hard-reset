@@ -3,7 +3,7 @@ import { useClock } from '../../hooks/useClock'
 import { FOOTER } from '../../content/site'
 import styles from './SiteFooter.module.css'
 
-/* 07 — footer. The clock is the one live thing down here. */
+/* 06 — footer. The clock is the one live thing down here. */
 
 export function SiteFooter() {
   const clock = useClock()

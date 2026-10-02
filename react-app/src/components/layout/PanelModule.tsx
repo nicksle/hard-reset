@@ -2,10 +2,10 @@ import { Suspense, lazy } from 'react'
 import type { ComponentType } from 'react'
 import { Section } from './Section'
 
-/* Lazy boundary for the three interactive panels.
+/* Lazy boundary for the two interactive panels.
  *
  * The boot gate holds the screen for ~2.6s before anyone can scroll, so the
- * coverflows and the globe have no business in the initial bundle — they load
+ * two coverflows have no business in the initial bundle — they load
  * while the boot log is still typing. The placeholder is a bare panel of the
  * right height so nothing shifts when the real one arrives.
  */
