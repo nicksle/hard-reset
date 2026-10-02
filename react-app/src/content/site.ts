@@ -40,8 +40,8 @@ export const ABOUT = {
   headAccent: 'hard_reset',
   sub: '// NAME · DESCRIPTION · SYNOPSIS',
   paragraphs: [
-    'HARD_RESET is a San Francisco techno + electro collective throwing warehouse parties for people who want to disappear into the sound.',
-    'No VIP. No bottle service. Just heavy low-end, strobe, fog, and a room full of strangers who become the same organism by 3am.',
+    'HARD_RESET is a San Francisco electronic music collective throwing parties for people who want to disappear into the sound.',
+    'No VIP. No bottle service. No pretension. Only the best beats, some low lights and fog, and a room full of strangers who become the same organism by the end.',
     'We reboot the week. Wipe the cache. Start clean.',
   ],
   ascii: `     ┌─────────────────────────┐
