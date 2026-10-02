@@ -1,11 +1,16 @@
 import { useEffect, useRef } from 'react'
-import { Marquee } from './Marquee'
 import { Wordmark } from './Wordmark'
-import { MARQUEE_TOP, MARQUEE_BOTTOM } from '../../content/site'
 import styles from './Hero.module.css'
 
-/* 01 — the hero. The wordmark over the live binary backdrop, framed by two
- * marquee strips. Fades as you scroll past so the body takes over cleanly. */
+/* 01 — the hero. The wordmark over the live binary backdrop. Fades as you
+ * scroll past so the body takes over cleanly.
+ *
+ * The two marquee strips are switched off for now (they were rendering
+ * inconsistently). To bring them back, import Marquee and MARQUEE_TOP /
+ * MARQUEE_BOTTOM from content/site and put these back above <Wordmark>:
+ *   <Marquee tokens={MARQUEE_TOP} position="top" />
+ *   <Marquee tokens={MARQUEE_BOTTOM} position="bottom" />
+ */
 
 export function Hero({ live }: { live: boolean }) {
   const ref = useRef<HTMLElement>(null)
@@ -28,8 +33,6 @@ export function Hero({ live }: { live: boolean }) {
 
   return (
     <header className={styles.hero} ref={ref}>
-      <Marquee tokens={MARQUEE_TOP} position="top" />
-      <Marquee tokens={MARQUEE_BOTTOM} position="bottom" />
       <Wordmark animate={live} />
       <div className={styles.hint}>▼ scroll</div>
     </header>
