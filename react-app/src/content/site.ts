@@ -36,9 +36,6 @@ export const MARQUEE_TOP: MarqueeToken[] = [
 export const MARQUEE_BOTTOM: MarqueeToken[] = [' EVERY DAMN SUNDAY ', 'diamond', ' ']
 
 export const ABOUT = {
-  head: '$ man ',
-  headAccent: 'hard_reset',
-  sub: '// NAME · DESCRIPTION · SYNOPSIS',
   paragraphs: [
     'HARD_RESET is a San Francisco electronic music collective throwing parties for people who want to disappear into the sound.',
     'No VIP. No bottle service. No pretension. Only the best beats, some low lights and fog, and a room full of strangers who become the same organism by the end.',
