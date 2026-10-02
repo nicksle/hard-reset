@@ -64,10 +64,12 @@ export function EventDetails({ event, phase, onClose }: EventDetailsProps) {
  * The button is a real <a> to the Wix event page — new tab, so the deck keeps
  * its scroll position and the boot sequence doesn't replay when they come back.
  *
- * Three outcomes, and the third one is the point:
- *   selling + a link   -> live magenta anchor
- *   sold out / past    -> disabled button, still says why
- *   selling + NO link  -> nothing at all
+ * Five outcomes, and the selling-without-a-link one is the point:
+ *   selling + a link     -> live magenta BUY TICKETS anchor
+ *   selling + NO link    -> nothing at all
+ *   sold out / past + a link -> quiet outline anchor to the Wix event page
+ *                           (photos, details, waitlist) — never "BUY"
+ *   sold out / past, no link -> disabled button, still says why
  *
  * That last case is a content gap, not a state worth rendering. Wix slugs get
  * pasted in by hand (see content/events.ts), so an event is "TICKETS LIVE"
@@ -79,9 +81,22 @@ function BuyButton({ event }: { event: HardResetEvent }) {
   const href = ticketHref(event)
 
   if (!ticketsOpen(event.status)) {
+    const past = event.status === 'PAST'
+    if (href) {
+      return (
+        <a
+          className={[styles.buy, styles.buyQuiet].join(' ')}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {past ? '▸ VIEW EVENT PAGE' : '▸ SOLD OUT · VIEW PAGE'}
+        </a>
+      )
+    }
     return (
       <button className={styles.buy} type="button" disabled>
-        {event.status === 'PAST' ? '▸ EVENT ENDED' : '▸ SOLD OUT'}
+        {past ? '▸ EVENT ENDED' : '▸ SOLD OUT'}
       </button>
     )
   }

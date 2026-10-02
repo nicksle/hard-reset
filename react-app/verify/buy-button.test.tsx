@@ -30,9 +30,19 @@ const cases: [string, HardResetEvent, RegExp | null][] = [
   ['LIVE + javascript:', base('TICKETS LIVE', 'javascript:alert(1)'), null],
   ['SOLD OUT + real url', base('SOLD OUT', 'https://www.hardresetpresents.com/event-details/q'), /disabled[^>]*>▸ SOLD OUT|▸ SOLD OUT/],
   ['PAST', base('PAST', null), /▸ EVENT ENDED/],
+  ['PAST + "#"', base('PAST', '#'), /disabled[^>]*>▸ EVENT ENDED/],
+  ['PAST + real url', base('PAST', 'https://www.hardresetpresents.com/event-details/q'), /<a[^>]+href="https:\/\/www\.hardresetpresents\.com\/event-details\/q"[^>]*>▸ VIEW EVENT PAGE/],
+  ['SOLD OUT + null', base('SOLD OUT', null), /disabled[^>]*>▸ SOLD OUT/],
 ]
 
 let fail = 0
+for (const st of ['PAST', 'SOLD OUT'] as const) {
+  const html = renderToStaticMarkup(
+    <EventDetails event={base(st, 'https://www.hardresetpresents.com/event-details/q')} phase="open" onClose={() => {}} />,
+  )
+  if (/BUY TICKETS/.test(html)) { fail++; console.log(`  FAIL  ${st} + url says BUY TICKETS`) }
+  else console.log(`  ok    ${st} + url never says BUY TICKETS`)
+}
 for (const [name, ev, expect] of cases) {
   const html = renderToStaticMarkup(
     <EventDetails event={ev} phase="open" onClose={() => {}} />,

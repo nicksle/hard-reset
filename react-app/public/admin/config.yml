@@ -82,6 +82,8 @@ collections:
                   Copy the event page link out of the Wix dashboard (Events →
                   the event → Share). Leave this empty until you have it — the
                   BUY TICKETS button hides itself rather than linking nowhere.
+                  Keep it after the party: past and sold-out parties show a
+                  VIEW EVENT PAGE link to it instead.
               - name: startsAt
                 label: Doors open
                 widget: datetime
