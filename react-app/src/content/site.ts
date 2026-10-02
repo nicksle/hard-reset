@@ -41,19 +41,6 @@ export const ABOUT = {
     'No VIP. No bottle service. No pretension. Only the best beats, some low lights and fog, and a room full of strangers who become the same organism by the end.',
     'We reboot the week. Wipe the cache. Start clean.',
   ],
-  ascii: `     ┌─────────────────────────┐
-     │  ██   ██  ██████        │
-     │  ██   ██  ██   ██       │
-     │  ███████  ██████        │
-     │  ██   ██  ██   ██       │
-     │  ██   ██  ██   ██       │
-     │                         │
-     │   > SYSTEM REBOOTING    │
-     │   > DROPPING THE BASS   │
-     │   > ████████████ 100%   │
-     │                         │
-     │   [ SEE YOU THERE ]     │
-     └─────────────────────────┘`,
 }
 
 export const SIGNUP = {

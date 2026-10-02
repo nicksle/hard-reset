@@ -70,7 +70,7 @@ public/media/            hero video, fliers, DJ photos
   (self-hosted, latin only). `--mono-glyph` is a system mono stack for anything
   drawn out of box-drawing or block characters — Space Mono's subset doesn't
   include them, so ASCII art in `--mono` falls back per glyph and stops lining
-  up. The About panel's art uses `--mono-glyph` for exactly this reason.
+  up. Use `--mono-glyph` for any ASCII art.
 - **Public assets go through `asset()`** (`src/utils/asset.ts`) so they respect
   the base path. A bare `/media/...` string 404s on Pages.
 - **Content is data, and it is no longer ours.** Parties and DJs live in
