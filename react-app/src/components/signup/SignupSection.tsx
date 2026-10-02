@@ -5,7 +5,7 @@ import { Reveal } from '../ui/Reveal'
 import { SIGNUP } from '../../content/site'
 import styles from './SignupSection.module.css'
 
-/* 06 — ./subscribe. No backend yet: swap the body of `submit` for a fetch to
+/* 05 — ./subscribe. No backend yet: swap the body of `submit` for a fetch to
  * whatever list provider you land on and the rest of the component stands. */
 
 export function SignupSection() {

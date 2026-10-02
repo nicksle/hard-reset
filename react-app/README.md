@@ -52,13 +52,13 @@ src/
   styles/                tokens.css + global.css + fonts.css (Space Mono)
   hooks/                 coverflow, binary decode, glitch, player, overlay
   components/
-    intro/  hero/  events/  talent/  world/  about/  signup/  footer/
+    intro/  hero/  events/  talent/  about/  signup/  footer/
     carousel/            shared coverflow used by events and talent
     layout/              Section / Wrap / SectionHead / PanelModule
     ui/                  TerminalWindow, Overlay, StatusBadge, Equalizer, Reveal
   utils/                 accent map, public-asset path helper
 public/admin/            Sveltia CMS — the editing UI, shipped with the site
-public/media/            hero video, fliers, DJ photos, world/01..21.jpg
+public/media/            hero video, fliers, DJ photos
 ```
 
 ## Rules of thumb
@@ -88,7 +88,7 @@ public/media/            hero video, fliers, DJ photos, world/01..21.jpg
 - **Vertical scroll is never intercepted.** `useCoverflow` listens for `wheel`
   but returns early unless the gesture is predominantly horizontal. Don't
   "simplify" that check away.
-- **The three interactive panels are code-split** (`layout/PanelModule.tsx`).
+- **The two interactive panels are code-split** (`layout/PanelModule.tsx`).
   They load while the boot log is still typing, which keeps the initial bundle
   under budget. Keep new heavy panels lazy too.
 

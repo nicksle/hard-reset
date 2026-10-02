@@ -9,10 +9,9 @@ import { SignupSection } from '../components/signup/SignupSection'
 import { SiteFooter } from '../components/footer/SiteFooter'
 import styles from '../components/layout/Site.module.css'
 
-// The three interactive panels are code-split — see PanelModule.
+// The two interactive panels are code-split — see PanelModule.
 const EventsSection = lazyPanel('parties', () => import('../components/events/EventsSection'))
 const TalentSection = lazyPanel('talent', () => import('../components/talent/TalentSection'))
-const WorldSection = lazyPanel('world', () => import('../components/world/WorldSection'))
 
 /* The deck. Every route renders this; the children only add metadata.
  *
@@ -21,10 +20,9 @@ const WorldSection = lazyPanel('world', () => import('../components/world/WorldS
  *   01 Hero            wordmark over the backdrop
  *   02 EventsSection   flier coverflow -> /parties/:id
  *   03 TalentSection   DJ coverflow -> /talent/:id
- *   04 WorldSection    photo globe
- *   05 AboutSection    man page
- *   06 SignupSection   ./subscribe
- *   07 SiteFooter
+ *   04 AboutSection    man page
+ *   05 SignupSection   ./subscribe
+ *   06 SiteFooter
  *
  * `live` flips when the gate clears: it starts the video decode and the
  * wordmark glitch, and fades the deck in.
@@ -42,7 +40,6 @@ export default function SiteLayout() {
         <div className={styles.body}>
           <EventsSection />
           <TalentSection />
-          <WorldSection />
           <AboutSection />
           <SignupSection />
           <SiteFooter />

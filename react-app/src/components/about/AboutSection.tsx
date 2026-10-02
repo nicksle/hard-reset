@@ -3,7 +3,7 @@ import { Reveal } from '../ui/Reveal'
 import { ABOUT } from '../../content/site'
 import styles from './AboutSection.module.css'
 
-/* 05 — man hard_reset. Copy lives in content/site.ts so the voice can change
+/* 04 — man hard_reset. Copy lives in content/site.ts so the voice can change
  * without touching a component. */
 
 export function AboutSection() {

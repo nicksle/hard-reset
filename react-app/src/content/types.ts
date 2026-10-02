@@ -65,7 +65,6 @@ export interface DJ {
 export type PanelId =
   | 'parties'
   | 'talent'
-  | 'world'
   | 'about'
   | 'signup'
 

@@ -91,12 +91,6 @@ export const FOOTER: {
   bottom: '// © 2026 HARD_RESET // BE EXCELLENT TO EACH OTHER //',
 }
 
-/** 21 party photos that build the globe. */
-export const WORLD_PHOTOS: string[] = Array.from(
-  { length: 21 },
-  (_, i) => asset(`media/world/${String(i + 1).padStart(2, '0')}.jpg`),
-)
-
 /* Where the site lives. Unfurlers reject relative og:image paths, so the
  * detail routes build absolute URLs from this.
  *
